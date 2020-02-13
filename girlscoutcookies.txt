@@ -41,3 +41,12 @@ class Structures ( all the buildings) Rob
 class Inventory (stuff that's common to all the structures - doors, pens etc) Brook
 
 
+
+02/13/20
+
+Rob - making progress on state transitions
+Brook making progress on functionality
+
+for tonight will continue to work individually, push seperate files to git then tomorrow start making them work together.
+
+
