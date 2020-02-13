@@ -1,0 +1,43 @@
+GIRLSCOUT out selling cookies.
+they have - [forms, pen, $, cookies, tape]
+
+COOKIE price = 5
+
+walk up to OFFICE BUILDING
+SIGN "No soliciting." go in Y/N?
+[door] is unlocked
+they walk into FOYER
+
+FOYER has DIRECTORY: BUSINESS1 on first floor, BUSINESS2 on second floor, BUSINESS3 on second floor
+STAIRS and ELEVATOR
+SECURITY GUARD sitting at DESK [telephone, pens, computer] asks GIRLSCOUT "What do you want?" 
+GIRLSCOUT "do you want to buy some cookies?"
+SECURITY GUARD Y/N if Y = "Of course" N = "You can't sell in here"
+
+gets past SECURITY GUARD.
+
+*goes into BUSINESS [ door, customers, employees, desk, ] can shout "anybody want cookies?" can find specific employee to ask, filling out form, collecting $$
+
+*BUYER will buy - random generator for number of boxes
+won't buy - give form in case change mind
+
+
+*If DOOR is locked can slide a form under the door or tape it to the door
+
+
+STAIRS -> status change, tired after climbing
+ELEVATOR could get stuck
+
+
+End conditions - time based? action based? 
+winning = $$$ , so need [TOTAL] 
+losing = if GIRLSCOUT picks up something or  BUSINESS3 says GIRLSCOUT looks like an undocumented alien calls ICE and locks her in a cage
+
+DOOR locked Y/N, act of opening does it generate a sound?
+
+Potential CLASSES - 
+class Characters (all human like beings) Brook
+class Structures ( all the buildings) Rob
+class Inventory (stuff that's common to all the structures - doors, pens etc) Brook
+
+
