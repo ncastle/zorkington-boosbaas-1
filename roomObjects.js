@@ -23,7 +23,7 @@ class Room {
         this.sign = sign || "Sign"
         this.canChangeTo = canChangeTo
     }
-    locked: false,
+    locked = false
 
 } //end of Room class construct -------------------
 
@@ -41,6 +41,7 @@ const foyer = new Room("182 Main Street foyer",
     "You are looking at an elevator with three floors listed, and a building directory posted on the wall next to it.",
     "You see the door to a business, with the name 'Nectar's' stenciled on the door.",
     "You are standing in the foyer of an office building in downtown Burlington.\nThere's a reception desk, elevator, stairway and entrance to a business\nvisible.",
+    "The sign is a building directory. It says:\nGround Floor: Reception, Nectar's\n2nd Floor: Trump Code Academy, Asure Software\n3rd Floor: Drummond Associates",
     ["street", "elevator", "stairs", "nectars"])
 const elevator = new Room("title",
     "north",
@@ -105,11 +106,11 @@ const roof = new Room("title",
     "west",
     "descript",
     "sign",
-    ["thirdFloorFoyer"])
+    ["thirdFloorFoyer", "offRoof"])
 
 
 //--------------------------------------------------------------------------
-let currentRoom = foyer;
+let currentRoom = roof;
 console.log("north " + currentRoom.north)
 console.log("south " + currentRoom.south)
 console.log("east " + currentRoom.east)
@@ -117,25 +118,31 @@ console.log("west " + currentRoom.west)
 console.log("You are standing in: " + currentRoom.title)
 console.log("Room description " + currentRoom.descript)
 console.log("sign " + currentRoom.sign)
-console.log("You can move to: " + currentRoom.canMoveTo[])
+console.log("You can move to: " + currentRoom.canMoveTo
 
 //---------------------------------------------------------------------------
 async function play() {
-    console.log("test")
     let userInput = await ask(">_")
-    if (userInput.includes("look")) {
-        if (userInput.includes("north")) {
-            console.log(currentRoom.north);
-        } else if (userInput.includes("south")) {
-            console.log(currentRoom.south);
-        } else if (userInput.includes("east")) {
-            console.log(currentRoom.east);
-        } else if (userInput.includes("west")) {
-            console.log(currentRoom.west);
-        } else if (userInput.includes("sign")) {
-            console.log(currentRoom.sign);
+    while (userInput !== "exit") {
+        if (userInput.includes("look")) {
+            if (userInput.includes("north")) {
+                console.log(currentRoom.north);
+                return (currentRoom.north)
+            } else if (userInput.includes("south")) {
+                console.log(currentRoom.south);
+                userInput = await ask(">_")
+            } else if (userInput.includes("east")) {
+                console.log(currentRoom.east);
+                userInput = await ask(">_")
+            } else if (userInput.includes("west")) {
+                console.log(currentRoom.west);
+                userInput = await ask(">_")
+            } else if (userInput.includes("sign")) {
+                console.log(currentRoom.sign);
+                userInput = await ask(">_")
+            }
+            else console.log("I'm not sure where you want me to look.")
         }
-        else console.log("I'm not sure where you want me to look.")
     }
 } //end bracket for ask function
 
