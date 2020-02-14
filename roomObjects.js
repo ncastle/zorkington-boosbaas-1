@@ -13,135 +13,85 @@ function ask(questionText) {
 };
 //--------------------------Classes Initialization -------------------------------
 class Room {
-    constructor(title, north, south, east, west, descript, sign, canChangeTo) {
-        this.title = title || "Room"
-        this.descript = descript || "This is a room."
-        this.north = north || "You are looking at a blank wall to the north."
-        this.south = south || "You are looking at a blank wall to the south."
-        this.east = east || "You are looking at a blank wall to the east."
-        this.west = west || "You are looking at a blank wall to the west."
-        this.sign = sign || "Sign"
-        this.canChangeTo = canChangeTo
+    constructor(title, descript, inventory, north, south, east, west, sign, locked) {
+        this.title = title
+        this.descript = descript
+        this.inventory = inventory
+        this.north = north
+        this.south = south
+        this.east = east
+        this.west = west
+        this.sign = sign
+        this.locked = locked
     }
-    locked = false
 
 } //end of Room class construct -------------------
+//----------------------Constructors---------------------------------------
+const street = new Room("on Main Street at No. 182", "You see ", ["paper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", "false")
+const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", "false")
+const elevator = new Room()
+const stairs = new Room()
+const nectars = new Room()
+const secondFloorFoyer = new Room()
+const trumpCodeAcademy = new Room()
+const asureSoftware = new Room()
+const thirdFloorFoyer = new Room()
+const roof = new Room()
 
-const street = new Room("On Main Street at No. 182",
-    "You are looking across the street at the courthouse.",
-    "You are looking at the door of 182 Main Street.",
-    "You are looking east up the hill toward UVM.",
-    "You are looking west toward the lake.",
-    "You are standing on a city street in Burlington.",
-    "The sign lists several businesses at 182 Main Street.",
-    ["foyer"])
-const foyer = new Room("182 Main Street foyer",
-    "You are looking out at Main Street.",
-    "There is a man sitting at a reception desk to your front,\nwith a staircase visible behind him. He is smiling.",
-    "You are looking at an elevator with three floors listed, and a building directory posted on the wall next to it.",
-    "You see the door to a business, with the name 'Nectar's' stenciled on the door.",
-    "You are standing in the foyer of an office building in downtown Burlington.\nThere's a reception desk, elevator, stairway and entrance to a business\nvisible.",
-    "The sign is a building directory. It says:\nGround Floor: Reception, Nectar's\n2nd Floor: Trump Code Academy, Asure Software\n3rd Floor: Drummond Associates",
-    ["street", "elevator", "stairs", "nectars"])
-const elevator = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["foyer", "2ndFloorFoyer", "3rdFloorFoyer"])
-const stairs = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["foyer", "2ndFloorFoyer", "3rdFloorFoyer"])
-const nectars = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["foyer"])
-const secondFloorFoyer = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["stairs", "elevator", "trumpCodeAcademy", "asureSoftware"])
-const trumpCodeAcademy = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["secondFloorFoyer"])
-const asureSoftware = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["secondFloorFoyer"])
-const thirdFloorFoyer = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["roof"])
-const roof = new Room("title",
-    "north",
-    "south",
-    "east",
-    "west",
-    "descript",
-    "sign",
-    ["thirdFloorFoyer", "offRoof"])
+//------------------------------console log tests----------------------------------
+const player = {
+    boxesSold: 0,
+    moneyMade: 0,
+    inventory: [],
+    roomStart: street,
+    playerName: null
+}
 
-
-//--------------------------------------------------------------------------
-let currentRoom = roof;
-console.log("north " + currentRoom.north)
-console.log("south " + currentRoom.south)
-console.log("east " + currentRoom.east)
-console.log("west " + currentRoom.west)
+let currentRoom = player.roomStart;
+let playerLose = false
+console.log("north: " + currentRoom.north)
+console.log("south: " + currentRoom.south)
+console.log("east: " + currentRoom.east)
+console.log("west: " + currentRoom.west)
 console.log("You are standing in: " + currentRoom.title)
-console.log("Room description " + currentRoom.descript)
-console.log("sign " + currentRoom.sign)
-console.log("You can move to: " + currentRoom.canMoveTo
+console.log("Room description: " + currentRoom.descript)
+console.log("Sign says: " + currentRoom.sign)
+console.log("Room Inventory includes: " + currentRoom.inventory)
+console.log("You can move to: " + currentRoom.canMoveTo)
 
-//---------------------------------------------------------------------------
+//--------------------------play begins---------------------------------------
+
 async function play() {
-    let userInput = await ask(">_")
-    while (userInput !== "exit") {
+    if (player.playerName === null) {
+        player.playerName = await ask("What is your name?")
+        console.log("Hello " + player.playerName)
+        console.log("You are selling girl scout cookies. \nTo win the game you need to sell 100 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
+    } else if (player.boxesSold >= 100 || player.moneyMade >= 500) { //win check
+        console.log("Congratulations! You sold enough boxes! You win!");
+        process.exit();
+    } else if (playerLose != true) {
+        console.log("You are" + currentRoom.title)
+        console.log(currentRoom.descript)
+        let userInput = await ask(">_")
         if (userInput.includes("look")) {
             if (userInput.includes("north")) {
                 console.log(currentRoom.north);
-                return (currentRoom.north)
+                play();
             } else if (userInput.includes("south")) {
                 console.log(currentRoom.south);
-                userInput = await ask(">_")
+                play();
             } else if (userInput.includes("east")) {
                 console.log(currentRoom.east);
-                userInput = await ask(">_")
+                play();
             } else if (userInput.includes("west")) {
                 console.log(currentRoom.west);
-                userInput = await ask(">_")
+                play();
             } else if (userInput.includes("sign")) {
                 console.log(currentRoom.sign);
-                userInput = await ask(">_")
+                play();
             }
             else console.log("I'm not sure where you want me to look.")
+            play();
         }
     }
 } //end bracket for ask function
