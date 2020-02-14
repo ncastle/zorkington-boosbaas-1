@@ -23,11 +23,18 @@ class IsCookie {
     }
     cost = (howManyBoxes) => {
         price = howManyBoxes * 5
-        console.log(cost(5))
         return (howManyBoxes + 'will cost you' + price)
-}
+    }
+    remainingBoxes = () => {
+        remainingBoxes = this.howManyBoxes - boxesSold;
+        if (boxesSold > this.howManyBoxes) {
+            return 'Oh, I\'m sorry, I only have ' + this.howManyBoxes +' left.'
+        }
+        
+    }
+   
 
-}
+} 
 
 let desk = {
     drawers: true,
@@ -53,4 +60,4 @@ const obCookies = {
 
 }
 
-console.log(montpeculiar)
+
