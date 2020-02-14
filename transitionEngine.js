@@ -45,11 +45,11 @@ let nectars = {
   locked: false
 }
 let trumpCodeAcademy = {
-  'trump code academy',
+  descript: 'trump code academy',
   locked: false
 }
 let asureSoftware = {
-  'asure software',
+  descript: 'asure software',
   locked: false
 }
 let states = {
@@ -67,19 +67,29 @@ let states = {
 let roomLookup = {
   'street': street,
   'foyer': foyer,
+  'stair': stairs,
   'stairs': stairs,
   'elevator': elevator,
   'secondFloor': secondFloor,
-  'second floor': secondFloor
+  'second floor': secondFloor,
+  'secondfloor': secondFloor,
+  'asure software': asureSoftware,
+  'trump': trumpCodeAcademy,
+  'trump code': trumpCodeAcademy,
+  'trump code academy': trumpCodeAcademy,
+  'nectar': nectars,
+  'nectars': nectars,
+  'asure': asureSoftware,
+  'third floor': thirdFloor,
+  'thirdfloor': thirdFloor,
+  'thirdFloor': thirdFloor
 }
 let currentState = 'street'
 let currentRoom = roomLookup[currentState]
 
-
-
 async function changeRoom() {
-  if (currentState === "secondFloor") {
-    console.log("Congrats! You maed it to " + currentRoom.descript + ".")
+  if (currentState === "thirdFloor") {
+    console.log("Congrats! You made it to " + currentRoom.descript + ".")
     process.exit();
   } else {
     let change = await ask("which room do you want to go to?")
