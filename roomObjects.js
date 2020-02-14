@@ -61,18 +61,26 @@ console.log("You can move to: " + currentRoom.canMoveTo)
 
 //--------------------------play begins---------------------------------------
 
+//---------------start game function--------------------------------------
+async function startGame() {
+    let playerName = null;
+    playerName = await ask("What is your name?")
+    console.log("Hello " + playerName)
+    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 100 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
+    let init = await ask("Are you ready to start?")
+    if (init = "y" || "yes") {
+        play();
+    } else console.log('Sorry to see you go')
+    process.exit()
+}
+
 async function play() {
-    if (player.playerName === null) {
-        player.playerName = await ask("What is your name?")
-        console.log("Hello " + player.playerName)
-        console.log("You are selling girl scout cookies. \nTo win the game you need to sell 100 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
-    } else if (player.boxesSold >= 100 || player.moneyMade >= 500) { //win check
-        console.log("Congratulations! You sold enough boxes! You win!");
-        process.exit();
-    } else if (playerLose != true) {
+    if (playerLose != true) {
         console.log("You are" + currentRoom.title)
         console.log(currentRoom.descript)
-        let userInput = await ask(">_")
+        play()
+    }
+      let userInput = await ask(">_")
         if (userInput.includes("look")) {
             if (userInput.includes("north")) {
                 console.log(currentRoom.north);
@@ -93,10 +101,10 @@ async function play() {
             else console.log("I'm not sure where you want me to look.")
             play();
         }
-    }
-} //end bracket for ask function
+    } //end bracket for ask function
 
-play()
+startGame()
+
 //----------------------------------------------------------------------------
 
 
