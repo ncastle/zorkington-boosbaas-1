@@ -1,9 +1,10 @@
 class Human {
-    constructor(firstName, lastName, age, health = 10) {
+    constructor(firstName, health = 10, lastName, age ) {
         this.firstName = firstName || ''
+        this.health = health
         this.lastName = lastName || ''
         this.age = age || 'Older than the girlscout'
-        this.health = health
+       
 
     }
     //i need help with this loop
@@ -18,8 +19,8 @@ class Human {
     }
 }
 
-let girlScout = new Human('Zoiks', '', 12, 10)
-let securityOfficer = new Human('Tony', 'Crippled ex-Meter Reader', 54)
+let girlScout = new Human('Zoiks')
+let securityOfficer = new Human('Tony', '','Crippled ex-Meter Reader', )
 let employee1 = new Human('Mr.')
 let employee2 = new Human('Ms.')
 
