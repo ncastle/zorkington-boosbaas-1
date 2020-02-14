@@ -41,3 +41,29 @@ class Structures ( all the buildings) Rob
 class Inventory (stuff that's common to all the structures - doors, pens etc) Brook
 
 
+Outline of game play:
+
+Our fearless GIRLSCOUT(aka Player) needs to sell 100 boxes of girl scout cookies.  
+
+She is standing outside 182 Main st. She reads the sign on the door saying "No soliciting".
+
+PLAYER - do you go in anyways?
+yes: door is locked
+no: game ends w/ message "Loser. Girl scouts everywhere are ashamed."
+
+YES: Looks through door sees SECURITY GUARD sitting behind desk, earbuds totally focused on his phone.  Also sees piece of paper on floor with daily to-do checklist.
+    Smart girl scout sees the code 1A2b3C handwritten on paper.
+PLAYER - do you knock on door to get GUARD's attention?
+yes - Get 3 tries then message 'try something else.'
+    
+    or do you try code on door's keypad?
+yes - 3 tries to get code right. fail - end game
+    Succeed - door opens
+
+go in to FOYER look around, there is an OFFICE DIRECTORY on wall in between ELEVATOR and STAIRS, PAPER on floor.
+GIRLSCOUT read DIRECTORY, pickup PAPER
+
+SECURITY GUARD looks up and asks "What do you want?"
+GIRLSCOUT "I'm selling girl scout cookies. My mother said her friend in OFFICE told me I could come in today. "
+
+
