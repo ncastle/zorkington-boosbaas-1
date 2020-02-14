@@ -14,53 +14,85 @@ function ask(questionText) {
     readlineInterface.question(questionText, resolve);
   });
 };
+//try again 2.14.20
 
-//--------------------------Classes Initialization -------------------------------
-class Room {
-    constructor(title, descript, inventory, north, south, east, west, sign, locked) {
-        this.title = title
-        this.descript = descript
-        this.inventory = inventory
-        this.north = north
-        this.south = south
-        this.east = east
-        this.west = west
-        this.sign = sign
-        this.locked = locked
-    }
-    // roomStates = {
-    //     "street" : {canChangeTo: ["foyer"]},
-    //     "foyer": {canChangeTo: ["street", "elevator"]},
-    //     "elevator" : {canChangeTo: ["secondFloor","foyer"]},
-    //     "secondFloor": {canChangeTo: ["elevator"]},
-    // }
+let street = {
+  descript: 'the street',
+  locked: false
+}
+let foyer = {
+  descript: 'the foyer',
+  locked: false
+}
+let stairs = {
+  descript: 'the stairs',
+  locked: false
+}
+let elevator = {
+  descript: 'the elevator',
+  locked: false
+}
+let secondFloor = {
+  descript: 'the second floor',
+  locked: false
+}
+let thirdFloor = {
+  descript: 'the third floor',
+  locked: false
+}
+let nectars = {
+  descript: 'nectar\'s bar and grill',
+  locked: false
+}
+let trumpCodeAcademy = {
+  'trump code academy',
+  locked: false
+}
+let asureSoftware = {
+  'asure software',
+  locked: false
+}
+let states = {
+  street: { canChangeTo: ['foyer'] },
+  foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
+  stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+  elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+  secondFloor: { canChangeTo: ['elevator', 'stairs'] },
+  nectars: { canChangeTo: ['foyer']},
+  trumpCodeAcademy: {canChangeTo: ['secondFloor']},
+  asureSoftware: {canChangeTo: ['secondFloor']},
+  thirdFloor: {canChangeTo: ["roof"]}
+}
 
-} //end of Room class construct -------------------
+let roomLookup = {
+  'street': street,
+  'foyer': foyer,
+  'stairs': stairs,
+  'elevator': elevator,
+  'secondFloor': secondFloor,
+  'second floor': secondFloor
+}
+let currentState = 'street'
+let currentRoom = roomLookup[currentState]
 
-//----------------------Constructors---------------------------------------
 
-const street = new Room("Main Street at No. 182", "You see ", ["foyer"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", "false")
-const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", "false")
-const elevator = new Room("Elevator", "This is a building elevator",[], "You are looking at the elevator door.", "You are looking at the other elevator door.", "elevator wall.", "elevator wall", "floor directory lists 1st floor, second floor and third floor.", false )
-const secondFloor = new Room("Second Floor Foyer", "This is an empty room")
 
-//--------------------------------------------------------------------------
-
-street.canChangeTo = ["foyer"]
-foyer.canChangeTo = ["street", "elevator"]
-elevator.canChangeTo = ["foyer", "secondFloor"]
-secondFloor.canChangeTo = ["elevator"]
-
-let currentRoom = street;
-console.log(currentRoom.title)
-
-async function changeRoom(change) {
-    await ask("You are " + currentRoom.title + "\nWhere do you want to go?\n>_")
-    if(currentRoom.canChangeTo.includes(change)){
-        console.log("You are moving from " + currentRoom.title)
-        currentRoom = change;
-        console.log("Into: " + currentRoom + "\n")
-    } else
-    console.log("Sorry, you can't get thar from heah.\n")
+async function changeRoom() {
+  if (currentState === "secondFloor") {
+    console.log("Congrats! You maed it to " + currentRoom.descript + ".")
+    process.exit();
+  } else {
+    let change = await ask("which room do you want to go to?")
+    if (states[currentState].canChangeTo.includes(change)) {
+      console.log('Changing from state: ' + currentState)
+      currentState = change
+      currentRoom = roomLookup[currentState]
+      console.log('Current state is: ' + currentState)
+      console.log('Current room is: ' + currentRoom.descript)
+    } else {
+      console.log('invalid state transition attempted')
+      console.log('Current state is: ' + currentState)
+    } 
+  }changeRoom()
 }
 changeRoom()
