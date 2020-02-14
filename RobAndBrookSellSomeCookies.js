@@ -110,14 +110,14 @@ class Human {
 //----------------------Constructors---------------------------------------
 //title, descript, inventory, north, south, east, west, sign, locked//
 const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", ["paper"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
-const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", "false")
-const elevator = new Room("Elevator", "You are in the building elevator", [],"You are looking at the elevator door.")
-const stairs = new Room()
-const nectars = new Room()
-const secondFloorFoyer = new Room()
+const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
+const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "","Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
+const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "","Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
+const nectars = new Room("Nectar's Bar & Lounge", "You are in the business office of the famed Nectar's Bar.", ["six-pack of beer", "broom"], "", "", "", "","", false)
+const secondFloor = new Room()
 const trumpCodeAcademy = new Room("ICE")
 const asureSoftware = new Room("Meth lab")
-const thirdFloorFoyer = new Room()
+const thirdFloor = new Room()
 const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.",["rocks", "antenna"], "To the north you see the door into the building.","You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
 //****CHARACTERS */
 const girlScout = new Human('', )
@@ -177,7 +177,6 @@ function outcomeGenerator(min, max) {
 }
 console.log('this is the outcome generator ' + outcomeGenerator())
 
-
 //once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
 let boxesSold = [];
 function howManyBoxes(min, max) {
@@ -187,14 +186,69 @@ function howManyBoxes(min, max) {
 }
 const boxesBought = howManyBoxes(1, 15)
 console.log('I\'ll buy ' + boxesSold + ' How much will it cost?')
-
-
 let totalCost = howManyBoxes() * 5
-
 boxesSold.push(boxesBought)
+
+let states = {
+    street: { canChangeTo: ['foyer'] },
+    foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
+    stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+    elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+    secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
+    nectars: { canChangeTo: ['foyer']},
+    trumpCodeAcademy: {canChangeTo: ['secondFloor']},
+    asureSoftware: {canChangeTo: ['secondFloor']},
+    thirdFloor: {canChangeTo: ["roof"]}
+  }
+  
+  let roomLookup = {
+    'street': street,
+    'foyer': foyer,
+    'stair': stairs,
+    'stairs': stairs,
+    'elevator': elevator,
+    'secondFloor': secondFloor,
+    'second floor': secondFloor,
+    'secondfloor': secondFloor,
+    'asure software': asureSoftware,
+    'trump': trumpCodeAcademy,
+    'trump code': trumpCodeAcademy,
+    'trump code academy': trumpCodeAcademy,
+    'nectar': nectars,
+    'nectars': nectars,
+    'asure': asureSoftware,
+    'third floor': thirdFloor,
+    'thirdfloor': thirdFloor,
+    'thirdFloor': thirdFloor
+  }
+  let currentState = 'street'
+  let currentRoom = roomLookup[currentState]
+  
+  async function changeRoom() {
+    if (currentState === "thirdFloor") {
+      console.log("Congrats! You made it to " + currentRoom.descript + ".")
+      process.exit();
+    } else {
+      let change = await ask("which room do you want to go to?")
+      if (states[currentState].canChangeTo.includes(change)) {
+        console.log('Changing from state: ' + currentState)
+        currentState = change
+        currentRoom = roomLookup[currentState]
+        console.log('Current state is: ' + currentState)
+        console.log('Current room is: ' + currentRoom.descript)
+      } else {
+        console.log('invalid state transition attempted')
+        console.log('Current state is: ' + currentState)
+      } 
+    }changeRoom()
+  }
+  changeRoom()
+
 
 
 //----------------------------start game function ------------------------
+
+
 async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
     console.log("Hello " + girlScout.firstName +" \n")
@@ -205,78 +259,13 @@ async function startGame() {
         } else 
     console.log('Sorry to see you go')
     process.exit()
+
+
+
 }
 
 
+
+
 startGame()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
