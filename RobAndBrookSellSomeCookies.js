@@ -119,12 +119,20 @@ const trumpCodeAcademy = new Room("ICE")
 const asureSoftware = new Room("Meth lab")
 const thirdFloorFoyer = new Room()
 const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.",["rocks", "antenna"], "To the north you see the door into the building.","You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
-
+//****CHARACTERS */
 const girlScout = new Human('', )
 const securityOfficer = new Human('Tony','', 'Crippled ex-Meter Reader' )
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
-
+//****STUFF */
+const deskFoyer = new Inventory(false, false, 'battered wood', 150, ['drawers', 'cluttered'])
+const signStreet = new Inventory(false, false)
+const paperFoyer = new Inventory(true, false, 'coffee stained paper')
+const signFoyer = new Inventory(false, false)
+const pen = new Inventory(true, false)
+const doorknob = new Inventory(false, false, 'metal')
+const deskMeth = new Inventory(false, false, "metal")
+//*****COOKIES */
 const thinMint = new IsCookie('thin mints', 'mint-flavored cookies with a delicious chocolaty coating', 'crunchy', 'round', 32, 30)
 const hillFarmer = new IsCookie('Hill Farmer', 'maple oatmeal', 'crunchy', 'lacy round wafers', 16, 10, true, true, true)
 const samoas = new IsCookie('Samoas', 'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14, 20)
