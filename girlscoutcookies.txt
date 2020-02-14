@@ -1,3 +1,9 @@
+WINNING = boxes sold >=100, A WNICORN APPEARS
+LOSING = Health ===0 - lose some number of health for every lost sale
+ALSO LOSING - get locked up by ICE
+REALLY LOSING - gets blown up by meth lab
+
+
 GIRLSCOUT out selling cookies.
 they have - [forms, pen, $, cookies, tape]
 
@@ -39,6 +45,27 @@ Potential CLASSES -
 class Characters (all human like beings) Brook
 class Structures ( all the buildings) Rob
 class Inventory (stuff that's common to all the structures - doors, pens etc) Brook
+
+
+COMMANDS NEEDED
+Yes - 
+No - 
+GO -  (for moving from room to room OR towards object/person in room)
+LOOK - reports back room.direction or other room info
+MOVE - changes room state to new state 
+PICKUP - Adds item to inventory
+DROP
+UNLOCK
+SPEAK
+SHOW
+
+
+INVENTORY NEEDED
+
+trumpCodeAcademy = new Room("ICE") - cage
+asureSoftware = new Room("Meth lab") metal desk
+
+
 
 
 Outline of game play:
