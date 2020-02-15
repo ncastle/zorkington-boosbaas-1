@@ -1,7 +1,7 @@
 //Zorkington Project by Brook and Rob
 //Due 2.17.20
 
-
+//--------------------sets up readline interface and async ask function-----//
 const readline = require('readline')
 const readlineInterface = readline.createInterface({
     input: process.stdin,
@@ -20,13 +20,6 @@ function ask(questionText) {
 
 // Need - function for listing INVENTORY in room.  
 //variables 
-
-let desk = {
-    drawers: true,
-    cluttered: false,
-
-}
-
 
 //--------------------------Classes Initialization -------------------------------
 class Room {
@@ -86,13 +79,13 @@ class IsCookie {
 //------end of Cookie class construct ------------------- beginning of Human class
 
 class Human {
-    constructor(firstName, health = 10, lastName, age) {
+    constructor(firstName, health = 10, lastName, age, inventory, currentRoom) {
         this.firstName = firstName || ''
         this.health = health
         this.lastName = lastName || ''
         this.age = age || 'Older than the girlscout'
-        
-
+        this.inventory = inventory || []
+        this.currentRoom = currentRoom || foyer
     }
     //i need help with this loop
     healthStatus() {
@@ -106,23 +99,22 @@ class Human {
     }
 }
 
-
 //----------------------Constructors---------------------------------------
 //title, descript, inventory, north, south, east, west, sign, locked//
 const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", ["paper"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
 const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
-const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "","Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
-const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "","Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
-const nectars = new Room("Nectar's Bar & Lounge", "You are in the business office of the famed Nectar's Bar.", ["six-pack of beer", "broom"], "", "", "", "","", false)
-const secondFloor = new Room()
-const trumpCodeAcademy = new Room("ICE")
-const asureSoftware = new Room("Meth lab")
-const thirdFloor = new Room()
-const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.",["rocks", "antenna"], "To the north you see the door into the building.","You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
+const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
+const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
+const nectars = new Room("Nectar's Bar & Lounge", "You are in the business office of the famed Nectar's Bar.", ["six-pack of beer", "broom"], "", "", "", "", "", false)
+const secondFloor = new Room("Second Floor Foyer")
+const trumpCodeAcademy = new Room("Trump Code Academy")//ICE !!!!
+const asureSoftware = new Room("Asure Software", "The office of software company Asure Software.",[], "", "", "", "","Asure Software", false )
+const thirdFloor = new Room("Third Floor Foyer", "You are in the third floor foyer. There is a door labeled 'Roof Access' across from the stairs",[], "", "", "", "", false)
+const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.", ["rocks", "antenna"], "To the north you see the door into the building.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
 //****CHARACTERS */
-const girlScout = new Human('', )
-const securityOfficer = new Human('Tony','', 'Crippled ex-Meter Reader' )
-const employee1 = new Human('Mr.')
+const girlScout = new Human('')
+const securityOfficer = new Human('Tony', '', 'Crippled ex-Meter Reader')
+const employee1 = new Human('Mr.', )
 const employee2 = new Human('Ms.')
 //****STUFF */
 const deskFoyer = new Inventory(false, false, 'battered wood', 150, ['drawers', 'cluttered'])
@@ -138,6 +130,11 @@ const hillFarmer = new IsCookie('Hill Farmer', 'maple oatmeal', 'crunchy', 'lacy
 const samoas = new IsCookie('Samoas', 'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14, 20)
 const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', '', true, true, true)
 
+let desk = {
+    drawers: true,
+    cluttered: false,
+
+}
 
 //-------------------Lookup tables
 
@@ -154,18 +151,29 @@ const obCookies = {
 }
 
 const commands = {
-    
+    "yes": yes,
+    "no": no,
+    "go": move,
+    "move": move,
+    "look": look,
+    "see": look,
+    "pick up": pickup,
+    "pickup": pickup,
+    "get": pickup,
+    "drop": drop,
+    "unlock": unlock,
+    "speak": speak,
+    "ask": speak,
+    "show": show
 }
-
-
 //----------------FUNCTIONS-------------
-
 // a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
 function outcomeGenerator(min, max) {
     min = 0
     max = 10
     outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
-    {        if (outcome > 5) {
+    {
+        if (outcome > 5) {
             return " the the answer is yes";
 
         } else if (outcome <= 5) {
@@ -195,13 +203,13 @@ let states = {
     stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
     elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
     secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
-    nectars: { canChangeTo: ['foyer']},
-    trumpCodeAcademy: {canChangeTo: ['secondFloor']},
-    asureSoftware: {canChangeTo: ['secondFloor']},
-    thirdFloor: {canChangeTo: ["roof"]}
-  }
-  
-  let roomLookup = {
+    nectars: { canChangeTo: ['foyer'] },
+    trumpCodeAcademy: { canChangeTo: ['secondFloor'] },
+    asureSoftware: { canChangeTo: ['secondFloor'] },
+    thirdFloor: { canChangeTo: ["roof"] }
+}
+
+let roomLookup = {
     'street': street,
     'foyer': foyer,
     'stair': stairs,
@@ -220,52 +228,43 @@ let states = {
     'third floor': thirdFloor,
     'thirdfloor': thirdFloor,
     'thirdFloor': thirdFloor
-  }
-  let currentState = 'street'
-  let currentRoom = roomLookup[currentState]
-  
-  async function changeRoom() {
+}
+let currentState = 'street'
+let currentRoom = roomLookup[currentState]
+
+async function changeRoom() {
     if (currentState === "thirdFloor") {
-      console.log("Congrats! You made it to " + currentRoom.descript + ".")
-      process.exit();
+        console.log("Congrats! You made it to " + currentRoom.descript + ".")
+        process.exit();
     } else {
-      let change = await ask("which room do you want to go to?")
-      if (states[currentState].canChangeTo.includes(change)) {
-        console.log('Changing from state: ' + currentState)
-        currentState = change
-        currentRoom = roomLookup[currentState]
-        console.log('Current state is: ' + currentState)
-        console.log('Current room is: ' + currentRoom.descript)
-      } else {
-        console.log('invalid state transition attempted')
-        console.log('Current state is: ' + currentState)
-      } 
-    }changeRoom()
-  }
-  changeRoom()
-
-
+        let change = await ask("which room do you want to go to?")
+        if (states[currentState].canChangeTo.includes(change)) {
+            console.log('Going from room: ' + currentState)
+            currentState = change
+            currentRoom = roomLookup[currentState]
+            console.log('Current state is: ' + currentState)
+            console.log('Current room is: ' + currentRoom.descript)
+        } else {
+            console.log('Sorry, you can\'t get thar from heah')
+            console.log('Current state is: ' + currentState)
+        }
+    } changeRoom()
+}
+changeRoom()
 
 //----------------------------start game function ------------------------
 
-
 async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
-    console.log("Hello " + girlScout.firstName +" \n")
+    console.log("Hello " + girlScout.firstName + " \n")
     console.log("You are selling girl scout cookies. \nTo win the game you need to sell 100 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
     let init = await ask("Are you ready to start?\n>_")
-        if (init === "y" || "yes") {
-            play();
-        } else 
-    console.log('Sorry to see you go')
+    if (init === "y" || "yes") {
+        play();
+    } else
+        console.log('Sorry to see you go')
     process.exit()
-
-
 
 }
 
-
-
-
 startGame()
-
