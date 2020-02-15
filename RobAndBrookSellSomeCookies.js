@@ -150,22 +150,22 @@ const obCookies = {
 
 }
 
-const commands = {
-    "yes": yes,
-    "no": no,
-    "go": move,
-    "move": move,
-    "look": look,
-    "see": look,
-    "pick up": pickup,
-    "pickup": pickup,
-    "get": pickup,
-    "drop": drop,
-    "unlock": unlock,
-    "speak": speak,
-    "ask": speak,
-    "show": show
-}
+// const commands = {
+//     "yes": yes,
+//     "no": no,
+//     "go": move,
+//     "move": move,
+//     "look": look,
+//     "see": look,
+//     "pick up": pickup,
+//     "pickup": pickup,
+//     "get": pickup,
+//     "drop": drop,
+//     "unlock": unlock,
+//     "speak": speak,
+//     "ask": speak,
+//     "show": show
+// }
 //----------------FUNCTIONS-------------
 // a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
 function outcomeGenerator(min, max) {
