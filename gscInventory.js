@@ -1,55 +1,96 @@
+const min = 1
+const max = 10
+
+let isUnlocked = false //TESTING ONLY NEED TO REPLACE AS CLASS VALUE
+let outcome = outcomeGenerator(min, max)
+const key = outcomeGenerator(min, max)
+let boxesSold = 0;
+
+function outcomeGenerator(min, max) {
+
+    let outcome = (Math.floor(Math.random() * (max - min + 1)) + min)
+    {
+        if (outcome > 7) {
+            return
+        } else if (outcome <= 7) {
+            return
+        }
+    }
+}
+console.log('this is the outcome generator remove from final code ' + outcome) //FOR TESTING ONLY
+
+
+
+let unlockIt = () => {
+    if (isUnlocked === true || key > 7) {
+        console.log('Don\'t waste your time, it\'s already open' + 'value of  keys ' + key)
+        return
+    } else {
+        let isUnlocked = true
+        console.log('You\'re skills have paid off. The locked item is now unlocked. ' + key + isUnlocked)
+
+    }
+
+}
+unlockIt()
+
+
+
+
 class Inventory {
-    constructor(isPortable, isEdible, madeOutOf,value, misc) {
+    constructor(isPortable, isEdible, isHuman, isStuff, value, ) {
         this.isPortable = isPortable || true
         this.isEdible = isEdible || true
-        this.madeOutOf = madeOutOf || '' //so the desk in the meth lab can be made out of metal and the static electric spark blows things up.
+        this.isHuman = isHuman || false
+        this.isStuff = isStuff || [] // a place to store objects acquired during game play
         this.value = value || 0 //if someobdy offers to trade for a box of cookies, is it worth it?
-        this.misc = misc || ''//to give a category for things that are specific to object
+
     }
 }
 
-class IsCookie {
-    constructor(name, flavor, texture, shape, numberInBox, howManyBoxes, glutenFree, organic, gmoFree,) {
-        this.Name = name || 'cookie'
+class IsCookie extends Inventory {
+    constructor(isPortable, isEdible, isStuff, value, name, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
+        super(true, true, false, '', 5)
+        this.name = name || 'cookie'
         this.flavor = flavor || 'way too sweet'
         this.texture = texture || 'like stale cardboard'
         this.shape = shape || 'an amorphous blob'
         this.numberInBox = numberInBox || 0
-        this.howManyBoxes = howManyBoxes || 10 //how many boxes is girlscout actually carrying.  Need to be able to update
+        this.initialInventory = 20 // how many boxes girl scout starts with
         this.glutenFree = glutenFree || false
         this.organic = organic || false
         this.gmoFree = gmoFree || false
-        
     }
-    cost = (howManyBoxes) => {
-        price = howManyBoxes * 5
-        return (howManyBoxes + 'will cost you' + price)
+    howManyBoxesSold = (min, max) => {
+       
+        return (Math.floor(Math.random() * (max - min + 1)) + min)
     }
+
+
+    totalCost = (howManyBoxesSold) => {
+        this.totalCost = this.howManyBoxesSold * this.value
+        return (this.howManyBoxesSold + ' boxes will cost you $' + this.totalCost)
+    }
+
     remainingBoxes = () => {
+        let boxesSold = 12 //Have to replace this with function that returns number of boxes left
         remainingBoxes = this.howManyBoxes - boxesSold;
         if (boxesSold > this.howManyBoxes) {
-            return 'Oh, I\'m sorry, I only have ' + this.howManyBoxes +' left.'
+            return 'Oh, I\'m sorry, I only have ' + this.howManyBoxes + ' left.'
+        } else {
+            this.isStuff.push[boxesBought]
+
         }
-        
     }
-   
-
-} 
-
-const deskFoyer = new Inventory(false,false,'battered wood',150,['drawers', 'cluttered'])
-const signStreet = new Inventory(false, false)
-const paperFoyer = new Inventory(true, false, 'coffee stained paper')
-const signFoyer = new Inventory(false,false)
-const pen = new Inventory(true, false)
-const doorknob = new Inventory(false, false, 'metal')
-const deskMeth = new Inventory(false,false,"metal")
 
 
-const thinMint = new IsCookie('thin mints','mint-flavored cookies with a delicious chocolaty coating', 'crunchy','round',32,30,)
-const hillFarmer = new IsCookie('Hill Farmer','maple oatmeal', 'crunchy', 'lacy round wafers', 16,10, true, true, true)
-const samoas = new IsCookie('Samoas','caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14,20)
-const montpeculiar = new IsCookie('Montpeculiar','sweet and grassy,these cbd, hemp and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14','', true, true, true)
 
+
+const thinMint = new IsCookie('thin mints', 'mint-flavored cookies with a delicious chocolaty coating', 'crunchy', 'round', 32, 30)
+const hillFarmer = new IsCookie('Hill Farmer', 'maple oatmeal', 'crunchy', 'lacy round wafers', 16, 10, true, true, true)
+const samoas = new IsCookie('Samoas', 'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14, 20)
+const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', '', true, true, true)
+console.log(hillFarmer)
 const obCookies = {
     'thin mint': thinMint,
     'thin mints': thinMint,
@@ -64,3 +105,15 @@ const obCookies = {
 }
 
 
+
+//***************Other stuff**************** */
+
+class Furniture extends Inventory {
+    constructor(isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
+        super(isPortable, false, false, '', '')
+        this.isUnlocked = isUnlocked || false
+        this.conductsElectricity = conductsElectricity || false
+    }
+}
+const boxesBought = howManyBoxes(1, 15)
+console.log('I\'ll buy ' + boxesSold + ' How much will it cost?')
