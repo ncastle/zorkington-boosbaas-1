@@ -19,8 +19,6 @@ function outcomeGenerator(min, max) {
 }
 console.log('this is the outcome generator remove from final code ' + outcome) //FOR TESTING ONLY
 
-
-
 let unlockIt = () => {
     if (isUnlocked === true || key > 7) {
         console.log('Don\'t waste your time, it\'s already open' + 'value of  keys ' + key)

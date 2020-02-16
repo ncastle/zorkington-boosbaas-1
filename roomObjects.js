@@ -109,3 +109,9 @@ function changeRoom(newRoom) {
         console.log("Sorry, you can't move from " + currentState + " to " + newstate);
     }
 }
+
+
+//---------------------read sign loop -----------------------//
+if (command.includes() === ("read" || "look") && (command.includes() === "sign")) {
+    console.log(currentRoom.sign)
+}

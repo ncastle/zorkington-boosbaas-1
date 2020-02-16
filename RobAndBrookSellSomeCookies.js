@@ -23,10 +23,11 @@ function ask(questionText) {
 
 //--------------------------Classes Initialization -------------------------------
 class Room {
-    constructor(title, descript, inventory, north, south, east, west, sign, locked) {
+    constructor(title, descript, inventory, humans, north, south, east, west, sign, locked) {
         this.title = title
         this.descript = descript
         this.inventory = inventory
+        this.humans = humans
         this.north = north
         this.south = south
         this.east = east
@@ -77,32 +78,39 @@ class IsCookie {
 
 }
 //------end of Cookie class construct ------------------- beginning of Human class
-
 class Human {
-    constructor(firstName, health = 10, lastName, age, inventory, currentRoom) {
+    constructor(firstName, health, lastName, description, age, boxesSold, boxesBought, money, room) {
         this.firstName = firstName || ''
-        this.health = health
+        this.health = health || 10
         this.lastName = lastName || ''
+        this.description = description || "A character"
         this.age = age || 'Older than the girlscout'
-        this.inventory = inventory || []
-        this.currentRoom = currentRoom || street
+        this.boxesSold = boxesSold || 0
+        this.boxesBought = boxesBought || 0
+        this.money = money || 25
+        this.room = room || street
+
     }
     //i need help with this loop
-    healthStatus() {
+    //subtracts 2 health points if person says "no"
+    healthStatus(health) {
         howHealthy = this.health
-        while (howHealthy === 0) {
-            console.log('You died')
-
+        while (howHealthy < 1) {
+            console.log("You ran out of energy and can\'t sell any more cookies.")
+            process.exit()
         }
-        console.log('you\'re still alive ' + this.health)
-        return howHealthy--
+        console.log('You\'ve still got energy to keep going: ' + this.health + " out of 10.")
+        return howHealthy
     }
 }
 
+
+//**What do these characters need to do */
+
 //----------------------Constructors---------------------------------------
-//title, descript, inventory, north, south, east, west, sign, locked//
-const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nThere is a piece of paper on the steps to the building with what looks like a number on it.\nA security guard sits behind a desk within view of the door. ", ["paper", "quarter"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
-const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
+//title, descript, inventory, humans, north, south, east, west, sign, locked//
+const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nThere is a piece of paper on the steps to the building with what looks like a number on it.\nA security guard sits behind a desk within view of the door. ", ["paper", "quarter"], [], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
+const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], [], "You your north is the street.", "To your south is the security console and the stairway.", "To your east is an elevator.","To your west is the door to a business, with 'Nectar's Business Office' written on it.", "The building directory says:\nFirst Floor - Nectar's Business Office\nSecond Floor - Trump Code Academy, Asure Software\nThird Floor - Roof Access.", false)
 const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
 const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
 const nectars = new Room("Nectar's Bar & Lounge", "You are in the business office of the famed Nectar's Bar.", ["six-pack of beer", "broom"], "", "", "", "", "", false)
@@ -112,10 +120,13 @@ const asureSoftware = new Room("Asure Software", "The office of software company
 const thirdFloor = new Room("Third Floor Foyer", "You are in the third floor foyer. There is a door labeled 'Roof Access' across from the stairs",[], "", "", "", "", false)
 const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.", ["rocks", "antenna"], "To the north you see the door into the building.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
 //****CHARACTERS */
-const girlScout = new Human('')
-const securityOfficer = new Human('Tony', '', 'Crippled ex-Meter Reader')
-const employee1 = new Human('Mr.', )
-const employee2 = new Human('Ms.')
+let girlScout = new Human(null, 10, null, 12, 0, 0, 25, street)
+let securityOfficer = new Human('Tony', 10, "Manzello", "Crippled ex-Meter Reader", "55", 0, 0, 50, foyer)
+let employeeNectars = new Human('John Q.', 10, 'Barman', "A guy with a trimmed beard and long hair: The bar manager for Nectar's.", 35, 0, 0, 150, nectars)
+let employeeTrump = new Human('Suzy', 10, 'Trump', 'A blonde woman with spray-on tan.', 25, 0, 0, 10, trumpCodeAcademy)
+let employeeTrump2 = new Human('Jimbo', 10, 'Barr', "A middle-aged guy wearing sunglasses and carrying a briefcase.", 55, 0, 0, 50, trumpCodeAcademy)
+let employeeAsure1 = new Human("Kip", 10, "Steele", "An energetic man with a big smile.", 46, 0, 0, 75, asureSoftware)
+let employeeAsure2 = new Human("Lana", 10, "Potter", "A woman with brown hair and a big smile.", 32, 0, 0, 40, asureSoftware)
 //****STUFF */
 const deskFoyer = new Inventory(false, false, 'battered wood', 150, ['drawers', 'cluttered'])
 const signStreet = new Inventory(false, false)
@@ -133,7 +144,6 @@ const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp a
 let desk = {
     drawers: true,
     cluttered: false,
-
 }
 
 //-------------------Lookup tables
@@ -151,21 +161,20 @@ const obCookies = {
 }
 
 // const commands = {
-//     "yes": yes,
-//     "no": no,
-//     "go": move,
-//     "move": move,
-//     "look": look,
-//     "see": look,
-//     "pick up": pickup,
-//     "pickup": pickup,
-//     "get": pickup,
-//     "drop": drop,
-//     "unlock": unlock,
-//     "speak": speak,
-//     "ask": speak,
-//     "show": show
+
+//     "sell":sell
+// //     "look": look,
+// //     "see": look,
+// //     "pick up": pickup,
+// //     "pickup": pickup,
+// //     "get": pickup,
+// //     "drop": drop,
+// //     "unlock": unlock,
+// //     "speak": speak,
+// //     "ask": speak,
+// //     "show": show 
 // }
+
 //----------------FUNCTIONS-------------
 // a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
 function outcomeGenerator(min, max) {
@@ -236,37 +245,26 @@ let currentRoom = roomLookup[currentState]
 async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
     console.log("Hello " + girlScout.firstName + " \n")
-    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo see what is in the room, type [j]\nTo move around use [move][direction]")
-    console.log()
+    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo see what is in the room, type [j]\nTo move around use [move][direction]\nTo sell cookies, type [sell].")
+    console.log("\n")
     let init = await ask("Are you ready to start?\n>_")
     if (init === "y" || "yes") {
         let gameStatus = "playing"
-        changeRoom()
+        play()
     } else
         console.log('Sorry to see you go')
     process.exit()
 }
 
-function play(gameStatus){
-    if (gameStatus === "playing") {
-        return gameStatus
-    } else if(gameStatus === "losing") {
-        console.log ("Oh no! You lose!")
-    } else 
-        console.log ("You have won the game! It's a miracle! A beautiful winged unicorn swoops down to pick you and your remaining boxes up")
-}
-
-async function pickup(){
-    
-}
-
-
-async function changeRoom() {
-    if (currentState === "thirdFloor") {
-        console.log("Congrats! You made it to " + currentRoom.descript + ".")
+async function play() {
+    if (girlScout.boxesSold >= 25) {
+        console.log("Congrats! You sold " + girlScout.boxesSold + " and you've won the game! A beautiful winged unicorn swoops down to fly you away.")
         process.exit();
+    } else if (girlScout.health < 10) {
+        console.log("Oh no! you've totally run out of energy and you've lost the game.")
     } else {
-        let change = await ask("You are standing in the "+ currentRoom.title + "Which room do you want to go to?")
+        console.log()
+        let change = await ask("You are standing in the "+ currentRoom.title + "\n" + currentRoom.descript + "\n" + currentRoom.north + "\n" +currentRoom.south + "\n" + currentRoom.east + "\n" + currentRoom.west + "\nWhat do you want to do?")
         if (states[currentState].canChangeTo.includes(change)) {
             console.log('Going from room: ' + currentState)
             currentState = change
@@ -277,7 +275,15 @@ async function changeRoom() {
             console.log('Sorry, you can\'t get thar from heah')
             console.log('Current state is: ' + currentState)
         }
-    } changeRoom()
+    } play()
 }
 startGame()
-changeRoom()
+
+function pickup(item){
+    currentRoom.inventory.pop(item)
+    girlScout.inventory.push(item)
+    console.log("You have picked up the " + item)
+}
+
+
+
