@@ -93,23 +93,22 @@ class Characters {
     constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom) {
         this.firstName = firstName || ''
         this.description = description || 'one of the finest in the land'
-        this.initialHealth = initialHealth || 10
-        this.currentHealth = currentHealth
+        this.initialHealth = health || 10
+        this.currentHealth = health
         this.age = age || 'Older than the girlscout'
         this.inventory = inventory || []//POTENTIAL TO SET MAX NUMBER THINGS CAN CARRY
         this.currentRoom = currentRoom || foyer
     }
 
 
-    /*healthStatus() {
-         howHealthy = this.currentHealth
-         while (howHealthy === 0) {
+    healthStatus() {
+         
+        if (this.current === 0) {
              console.log('You died')
- 
-         }
+          }
          console.log('you\'re still alive ' + this.currentHealth)
-         return howHealthy-
-         */
+         
+        
 }
 
 
