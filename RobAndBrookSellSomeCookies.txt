@@ -1,6 +1,5 @@
-﻿//Zorkington Project by Brook and Rob
+//Zorkington Project by Brook and Rob
 //Due 2.17.20
-
 
 //--------------------sets up readline interface and async ask function-----//
 const readline = require('readline')
@@ -9,7 +8,6 @@ const readlineInterface = readline.createInterface({
     output: process.stdout
 });
 
-
 function ask(questionText) {
     return new Promise((resolve, reject) => {
         readlineInterface.question(questionText, resolve);
@@ -17,10 +15,7 @@ function ask(questionText) {
 };
 
 
-
-
-
-
+ 
 
 //--------------------------Classes Initialization -------------------------------
 class Room {
@@ -36,10 +31,8 @@ class Room {
         this.locked = false
     }
 
-
 }
 //end of Room class construct -------------------beginning of Inventory class
-
 
 class Inventory {
     constructor(description, isPortable, isEdible, isHuman, isStuff, value, ) {
@@ -50,15 +43,13 @@ class Inventory {
         this.isStuff = isStuff || [] // a place to store objects acquired during game play
         this.value = value || 0 //if someobdy offers to trade for a box of cookies, is it worth it?
 
-
     }
 }
 //end of Inventory class construct ------------------- beginning of Cookie class
 
-
 class IsCookie extends Inventory {
-    constructor(description, isPortable, isEdible, isStuff, value, name, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
-        super('', true, true, false, '', 5)
+    constructor(description,isPortable, isEdible, isStuff, value, name, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
+        super('',true, true, false, '', 5)
         this.name = name || 'cookie'
         this.flavor = flavor || 'way too sweet'
         this.texture = texture || 'like stale cardboard'
@@ -69,10 +60,16 @@ class IsCookie extends Inventory {
         this.organic = organic || false
         this.gmoFree = gmoFree || false
     }
+    howManyBoxesSold = (min, max) => {
+
+        return (Math.floor(Math.random() * (max - min + 1)) + min)
+    }
 
 
-
-
+    totalCost = (howManyBoxesSold) => {
+        this.totalCost = this.howManyBoxesSold * this.value
+        return (this.howManyBoxesSold + ' boxes will cost you $' + this.totalCost)
+    }
 
     remainingBoxes = () => {
         let boxesSold = 12 //Have to replace this with function that returns number of boxes left
@@ -81,13 +78,14 @@ class IsCookie extends Inventory {
             return 'Oh, I\'m sorry, I only have ' + this.howManyBoxes + ' left.'
         } else {
             this.isStuff.push[boxesBought]
+
         }
     }
+
+
 }
 
-
 //------end of Cookie class construct ------------------- beginning of Human class
-
 
 class Characters {
     constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom) {
@@ -100,7 +98,6 @@ class Characters {
         this.currentRoom = currentRoom || foyer
     }
 
-
     /*healthStatus() {
          howHealthy = this.currentHealth
          while (howHealthy === 0) {
@@ -111,52 +108,34 @@ class Characters {
          return howHealthy-
          */
 }
-
-
 class Human extends Characters {
-    constructor(firstName, description, initialHealth, currentHealth, inventory, age, currentRoom, hasGender) {
-        super(firstName, description, 10, currentHealth, age, inventory, currentRoom)
+    constructor(firstName, description, initialHealth, currentHealth, inventory, age, currentRoom, hasGender, boxesSold) {
+        super(firstName, description, 10, currentHealth, age, inventory,currentRoom)
         this.hasGender = hasGender
-    }
-    howManyBoxes() {
-        let min = 1
-        let max = 15
-        boxesBought = (Math.floor(Math.random() * (max - min + 1)) + min)
-        boxesSold += boxesBought
-        return boxesSold
-    }
-    totalCost = (howManyBoxes) => {
-        this.totalCost = this.howManyBoxes * this.value
-        return (this.howManyBoxes + ' boxes will cost you $' + this.totalCost)
+        this.boxesSold= 0
     }
 
 }
 
-
 //****end Characters begin Furniture and Office Supplies */
 
-
 class Furniture extends Inventory {
-    constructor(description, isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
-        super(description, isPortable, false, false, '', '')
+    constructor(description,isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
+        super(description,isPortable, false, false, '', '')
         this.isOpen = isOpen || false
         this.conductsElectricity = conductsElectricity || false
     }
 }
 
-
-class Supplies extends Inventory {
+class Supplies extends Inventory{
     constructor(description, isPortable, isEdible, isHuman, isStuff, value, isFlammable) {
         super(description, true, isEdible, false, '', '')
-        this.isFlammable = isFlammable || false
-
+        this.isFlammable=isFlammable || false
+        
     }
-
 
 }
 //----------------------Constructors---------------------------------------
-
-
 //****STUFF */
 const deskFoyer = new Furniture('dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, '', 50, false, false)
 const signStreet = new Supplies('No Soliciting', true, false, false, '', 0, false)
@@ -180,7 +159,6 @@ const asureSoftware = new Room("Asure Software", "The office of software company
 const thirdFloor = new Room("Third Floor Foyer", "You are in the third floor foyer. There is a door labeled 'Roof Access' across from the stairs", [], "", "", "", "", false)
 const roof = new Room("Roof", "You are on the building roof. The door inside is shut and locked behind you.", ["rocks", "antenna"], "To the north you see the door into the building.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "You're looking off the edge of the roof.", "A sign on the building door says 'NO ADMITTANCE'.", true)
 
-
 //****CHARACTERS */
 const girlScout = new Human('')
 const securityOfficer = new Human('Tony')
@@ -193,11 +171,6 @@ const employee4 = new Human('Ms.')
 
 
 
-
-
-
-
-
 //*****COOKIES */
 const thinMint = new IsCookie('thin mints', 'mint-flavored cookies with a delicious chocolaty coating', 'crunchy', 'round', 32, 30)
 const hillFarmer = new IsCookie('Hill Farmer', 'maple oatmeal', 'crunchy', 'lacy round wafers', 16, 10, true, true, true)
@@ -205,10 +178,7 @@ const samoas = new IsCookie('Samoas', 'caramel and toasted coconut-covered cooki
 const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', '', true, true, true)
 
 
-
-
 //-------------------Lookup tables
-
 
 const obCookies = {
     'thin mint': thinMint,
@@ -220,9 +190,7 @@ const obCookies = {
     'montpeculiar': montpeculiar,
     'montpelier': montpeculiar
 
-
 }
-
 
 // const commands = {
 //     "yes": yes,
@@ -240,6 +208,35 @@ const obCookies = {
 //     "ask": speak,
 //     "show": show
 // }
+//----------------FUNCTIONS-------------
+// a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
+function outcomeGenerator(min, max) {
+    min = 0
+    max = 10
+    outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
+    {
+        if (outcome > 5) {
+            return " the the answer is yes";
+
+        } else if (outcome <= 5) {
+
+            return 'absolutely not'
+        }
+
+    }
+}
+ outcomeGenerator()
+
+//once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
+ //let boxesSold = [];
+ function howManyBoxes(min, max) {
+
+     return (Math.floor(Math.random() * (max - min + 1)) + min)
+
+ }
+ const boxesBought = howManyBoxes(1, 15)
+
+ //let totalCost = howManyBoxes() * 5
 
 
 let states = {
@@ -253,32 +250,6 @@ let states = {
     asureSoftware: { canChangeTo: ['secondFloor'] },
     thirdFloor: { canChangeTo: ["roof"] }
 }
-
-
-
-
-
-//----------------FUNCTIONS-------------
-// a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
-function outcomeGenerator(min, max) {
-    min = 0
-    max = 10
-    outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
-    {
-        if (outcome > 7) {
-            return true //this means action will happen
-        } else if (outcome <= 7) {
-            return false
-        }
-    }
-}
-outcomeGenerator()
-
-
-//once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
-let boxesSold = 0;
-let boxesBought = 0
-
 
 let roomLookup = {
     'street': street,
@@ -303,7 +274,6 @@ let roomLookup = {
 let currentState = 'street'
 let currentRoom = roomLookup[currentState]
 
-
 async function changeRoom() {
     if (currentState === "thirdFloor") {
         console.log("Congrats! You made it to " + currentRoom.descript + ".")
@@ -324,18 +294,13 @@ async function changeRoom() {
 }
 changeRoom()
 
-
 //----------------------------start game  ------------------------
-
 
 console.log('You, in the guise of a fearless GIRLSCOUT, need to sell 100 boxes of girl scout cookies while keeping your spirits above zero to win this game. Along the way you will encounter surly employees and unforeseen situations.\nYour adventure begins one chilly morning in the booming metropolis of Burlington.  You are standing outside 182 Main Street wearing your sash with all its neatly sewn merit badges carrying boxes of cookies, forms and other random things.')
 console.log('Adventures, like life have rules. Here they are: ')
 
 
-
-
 //How to play - what are acceptable commands 
-
 
 async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
@@ -348,9 +313,7 @@ async function startGame() {
         console.log('Sorry to see you go')
     process.exit()
 
-
 }
 
-
 startGame()
-
+boxesSold.push(boxesBought)
