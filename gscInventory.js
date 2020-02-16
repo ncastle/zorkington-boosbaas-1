@@ -35,6 +35,41 @@ let unlockIt = () => {
 unlockIt()
 
 
+class Characters {
+    constructor(firstName, initialHealth, currentHealth, age, inventory, currentRoom) {
+        this.firstName = firstName || ''
+        this.initialHealth = initialHealth || 10
+        this.currentHealth = currentHealth
+        this.age = age || 'Older than the girlscout'
+        this.inventory = inventory || []//POTENTIAL TO SET MAX NUMBER THINGS CAN CARRY
+        this.currentRoom = currentRoom || "foyer"
+    }
+    //i need help with this loop
+    healthStatus() {
+        howHealthy = this.health
+        while (howHealthy === 0) {
+            console.log('You died')
+
+        }
+        console.log('you\'re still alive ' + this.health)
+        return howHealthy--
+    }
+}
+class Human extends Characters {
+    constructor(firstName, initialHealth, currentHealth, age, inventory, currentRoom, hasGender) {
+        super(firstName, 10, currentHealth, age, inventory, currentRoom, )
+   
+        this.hasGender = hasGender || ''
+    }
+   
+}
+
+const girlScout = new Human('')
+const securityOfficer = new Human('Tony',)
+const employee1 = new Human('Mr.')
+const employee2 = new Human('Ms.')
+const employee3 = new Human('Mr.')
+const employee4 = new Human('Ms.')
 
 
 class Inventory {
@@ -62,7 +97,7 @@ class IsCookie extends Inventory {
         this.gmoFree = gmoFree || false
     }
     howManyBoxesSold = (min, max) => {
-       
+
         return (Math.floor(Math.random() * (max - min + 1)) + min)
     }
 
@@ -91,7 +126,7 @@ const thinMint = new IsCookie('thin mints', 'mint-flavored cookies with a delici
 const hillFarmer = new IsCookie('Hill Farmer', 'maple oatmeal', 'crunchy', 'lacy round wafers', 16, 10, true, true, true)
 const samoas = new IsCookie('Samoas', 'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14, 20)
 const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', '', true, true, true)
-console.log(hillFarmer)
+
 const obCookies = {
     'thin mint': thinMint,
     'thin mints': thinMint,
