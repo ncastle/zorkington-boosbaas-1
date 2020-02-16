@@ -85,7 +85,7 @@ class Human {
         this.lastName = lastName || ''
         this.age = age || 'Older than the girlscout'
         this.inventory = inventory || []
-        this.currentRoom = currentRoom || foyer
+        this.currentRoom = currentRoom || street
     }
     //i need help with this loop
     healthStatus() {
@@ -101,7 +101,7 @@ class Human {
 
 //----------------------Constructors---------------------------------------
 //title, descript, inventory, north, south, east, west, sign, locked//
-const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", ["paper"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
+const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nThere is a piece of paper on the steps to the building with what looks like a number on it.\nA security guard sits behind a desk within view of the door. ", ["paper", "quarter"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
 const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
 const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
 const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
@@ -231,13 +231,42 @@ let roomLookup = {
 }
 let currentState = 'street'
 let currentRoom = roomLookup[currentState]
+//----------------------------start game function ------------------------
+
+async function startGame() {
+    girlScout.firstName = await ask("What is your name? \n>_")
+    console.log("Hello " + girlScout.firstName + " \n")
+    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo see what is in the room, type [j]\nTo move around use [move][direction]")
+    console.log()
+    let init = await ask("Are you ready to start?\n>_")
+    if (init === "y" || "yes") {
+        let gameStatus = "playing"
+        changeRoom()
+    } else
+        console.log('Sorry to see you go')
+    process.exit()
+}
+
+function play(gameStatus){
+    if (gameStatus === "playing") {
+        return gameStatus
+    } else if(gameStatus === "losing") {
+        console.log ("Oh no! You lose!")
+    } else 
+        console.log ("You have won the game! It's a miracle! A beautiful winged unicorn swoops down to pick you and your remaining boxes up")
+}
+
+async function pickup(){
+    
+}
+
 
 async function changeRoom() {
     if (currentState === "thirdFloor") {
         console.log("Congrats! You made it to " + currentRoom.descript + ".")
         process.exit();
     } else {
-        let change = await ask("which room do you want to go to?")
+        let change = await ask("You are standing in the "+ currentRoom.title + "Which room do you want to go to?")
         if (states[currentState].canChangeTo.includes(change)) {
             console.log('Going from room: ' + currentState)
             currentState = change
@@ -250,21 +279,5 @@ async function changeRoom() {
         }
     } changeRoom()
 }
-changeRoom()
-
-//----------------------------start game function ------------------------
-
-async function startGame() {
-    girlScout.firstName = await ask("What is your name? \n>_")
-    console.log("Hello " + girlScout.firstName + " \n")
-    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 100 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
-    let init = await ask("Are you ready to start?\n>_")
-    if (init === "y" || "yes") {
-        play();
-    } else
-        console.log('Sorry to see you go')
-    process.exit()
-
-}
-
 startGame()
+changeRoom()

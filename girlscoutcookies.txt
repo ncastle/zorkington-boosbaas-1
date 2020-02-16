@@ -1,7 +1,16 @@
-WINNING = boxes sold >=100, A WNICORN APPEARS
+WINNING = boxes sold >=100, A UNICORN APPEARS
 LOSING = Health ===0 - lose some number of health for every lost sale
 ALSO LOSING - get locked up by ICE
 REALLY LOSING - gets blown up by meth lab
+
+
+-into room
+-if there is a person in the room, you can ask them if they want to buy cookies
+-random generator says "yes" or "no"
+-if yes, generator picks a number of cookies they will buy
+-number of cookies bought increases player's boxesSold count by that number
+
+
 
 
 GIRLSCOUT out selling cookies.

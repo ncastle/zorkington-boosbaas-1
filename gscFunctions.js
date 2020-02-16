@@ -3,14 +3,14 @@ const min = 1
 const max = 10
 
 let isUnlocked = false //TESTING ONLY NEED TO REPLACE AS CLASS VALUE
-let outcome = outcomeGenerator(min,max)
+let outcome = outcomeGenerator(min, max)
 const key = outcomeGenerator(min, max)
 function outcomeGenerator(min, max) {
-   
+
     let outcome = (Math.floor(Math.random() * (max - min + 1)) + min)
     {
         if (outcome > 7) {
-           return " the the answer is yes";
+            return " the the answer is yes";
         } else if (outcome <= 7) {
             return 'absolutely not'
         }
@@ -35,19 +35,18 @@ unlockIt()
 //once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
 let boxesSold = [];
 function howManyBoxes(min, max) {
-    
-    return (Math.floor(Math.random() * (max - min + 1)) + min)
-    
-}
-const boxesBought= howManyBoxes(1,15)
-console.log('I\'ll buy ' + boxesSold + ' How much will it cost?')
 
+    return (Math.floor(Math.random() * (max - min + 1)) + min)
+
+}
+const boxesBought = howManyBoxes(1, 15)
+console.log('I\'ll buy ' + boxesSold + ' How much will it cost?')
 
 let totalCost = howManyBoxes() * 5
 
 boxesSold.push(boxesBought)
 
-console.log('this is boxes sold ' +boxesSold) //REMOVE THIS
+console.log('this is boxes sold ' + boxesSold) //REMOVE THIS
 
 console.log('$' + totalCost)
 
