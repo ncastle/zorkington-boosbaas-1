@@ -36,7 +36,8 @@ class Room {
 //end of Room class construct -------------------beginning of Inventory class
 
 class Inventory {
-    constructor(isPortable, isEdible, isHuman, isStuff, value, ) {
+    constructor(description, isPortable, isEdible, isHuman, isStuff, value, ) {
+        this.description = description || 'It\'s a thing only a mother could love.'
         this.isPortable = isPortable || true
         this.isEdible = isEdible || true
         this.isHuman = isHuman || false
@@ -48,8 +49,8 @@ class Inventory {
 //end of Inventory class construct ------------------- beginning of Cookie class
 
 class IsCookie extends Inventory {
-    constructor(isPortable, isEdible, isStuff, value, name, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
-        super(true, true, false, '', 5)
+    constructor(description,isPortable, isEdible, isStuff, value, name, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
+        super('',true, true, false, '', 5)
         this.name = name || 'cookie'
         this.flavor = flavor || 'way too sweet'
         this.texture = texture || 'like stale cardboard'
@@ -88,8 +89,9 @@ class IsCookie extends Inventory {
 //------end of Cookie class construct ------------------- beginning of Human class
 
 class Characters {
-    constructor(firstName, initialHealth, currentHealth, age, inventory, currentRoom) {
+    constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom) {
         this.firstName = firstName || ''
+        this.description = description || 'one of the finest in the land'
         this.initialHealth = initialHealth || 10
         this.currentHealth = currentHealth
         this.age = age || 'Older than the girlscout'
@@ -108,24 +110,35 @@ class Characters {
          */
 }
 class Human extends Characters {
-    constructor(firstName, initialHealth, currentHealth, age, inventory, currentRoom, hasGender) {
-        super(firstName, 10, currentHealth, age, inventory, currentRoom)
+    constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom, hasGender) {
+        super(firstName, description, 10, currentHealth, age, inventory, currentRoom)
         this.hasGender = hasGender
     }
 
 }
 
+//****end Characters begin Furniture and Office Supplies */
+
 class Furniture extends Inventory {
-    constructor(isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
-        super(isPortable, false, false, '', '')
+    constructor(description,isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
+        super(description,isPortable, false, false, '', '')
         this.isUnlocked = isUnlocked || false
         this.conductsElectricity = conductsElectricity || false
     }
 }
+
+class Supplies extends Inventory{
+    constructor(description, isPortable, isEdible, isHuman, isStuff, value, isFlammable) {
+        super(description, true, isEdible, false, '', '')
+        this.isFlammable=isFlammable || false
+        
+    }
+
+}
 //----------------------Constructors---------------------------------------
 //title, descript, inventory, north, south, east, west, sign, locked//
 const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", ["paper"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
-const foyer = new Room("This is the foyer", "You are in a room.", ["newspaper"], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
+const foyer = new Room("This is the foyer", "You are in a room.", [newspaper.description], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
 const elevator = new Room("Elevator", "You are in the building elevator", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
 const stairs = new Room("Stairway", "The stairs connect all three floors.", [], "", "", "", "", "Stair directory reads:\nFirst Floor: Security, Nectar's\nSecond Floor: Trump Code Academy, Asure Software\nThird Floor: ??", false)
 const nectars = new Room("Nectar's Bar & Lounge", "You are in the business office of the famed Nectar's Bar.", ["six-pack of beer", "broom"], "", "", "", "", "", false)
@@ -144,13 +157,15 @@ const employee3 = new Human('Mr.')
 const employee4 = new Human('Ms.')
 
 //****STUFF */
-const deskFoyer = new Inventory(false, false, 'battered wood', 150, ['drawers', 'cluttered'])
-const signStreet = new Inventory(false, false)
-const paperFoyer = new Inventory(true, false, 'coffee stained paper')
-const signFoyer = new Inventory(false, false)
-const pen = new Inventory(true, false)
-const doorknob = new Inventory(false, false, 'metal')
-const deskMeth = new Inventory(false, false, "metal")
+const deskFoyer = new Furniture('dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, '', 50, false, false)
+const signStreet = new Supplies('No Soliciting', true, false, false, '', 0, false)
+const paperFoyer = new Supplies('Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
+const signFoyer = new Supplies('Office directory', false, false, false, '', 0, false)
+const pen = new Supplies('basic Bic. Black Ink. It writes.',true, false, false, '', 0, false)
+const doorknobMeth = new Furniture('', false, false, false, '',0,false,true )
+const deskMeth = new Furniture('a battered grey desk, covered in old stickers',false,false,false,'',50,false,true)
+const newspaper = new Supplies('Last week\'s copy of "Hometown", wet and crumpled',true,false,false,'',0,true)
+
 
 
 //*****COOKIES */
