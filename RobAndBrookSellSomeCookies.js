@@ -15,21 +15,20 @@ function ask(questionText) {
 };
 
 
-// Need - function for listing INVENTORY in room.  
-//variables 
+ 
 
 //--------------------------Classes Initialization -------------------------------
 class Room {
     constructor(title, descript, inventory, north, south, east, west, sign, locked) {
         this.title = title
         this.descript = descript
-        this.inventory = inventory
-        this.north = north
-        this.south = south
-        this.east = east
-        this.west = west
+        this.inventory = inventory || []
+        this.north = north || null
+        this.south = south || null
+        this.east = east || null
+        this.west = west || null
         this.sign = sign
-        this.locked = locked
+        this.locked = false
     }
 
 }
@@ -110,9 +109,10 @@ class Characters {
          */
 }
 class Human extends Characters {
-    constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom, hasGender) {
-        super(firstName, description, 10, currentHealth, age, inventory, currentRoom)
+    constructor(firstName, description, initialHealth, currentHealth, inventory, age, currentRoom, hasGender, boxesSold) {
+        super(firstName, description, 10, currentHealth, age, inventory,currentRoom)
         this.hasGender = hasGender
+        this.boxesSold= 0
     }
 
 }
@@ -122,7 +122,7 @@ class Human extends Characters {
 class Furniture extends Inventory {
     constructor(description,isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
         super(description,isPortable, false, false, '', '')
-        this.isUnlocked = isUnlocked || false
+        this.isOpen = isOpen || false
         this.conductsElectricity = conductsElectricity || false
     }
 }
@@ -136,6 +136,17 @@ class Supplies extends Inventory{
 
 }
 //----------------------Constructors---------------------------------------
+//****STUFF */
+const deskFoyer = new Furniture('dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, '', 50, false, false)
+const signStreet = new Supplies('No Soliciting', true, false, false, '', 0, false)
+const paperFoyer = new Supplies('Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
+const signFoyer = new Supplies('Office directory', false, false, false, '', 0, false)
+const pen = new Supplies('basic Bic. Black Ink. It writes.', true, false, false, '', 0, false)
+const doorknobMeth = new Furniture('', false, false, false, '', 0, false, true)
+const deskMeth = new Furniture('a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
+const newspaper = new Supplies('Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
+
+
 //title, descript, inventory, north, south, east, west, sign, locked//
 const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", ["paper"], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
 const foyer = new Room("This is the foyer", "You are in a room.", [newspaper.description], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
@@ -156,15 +167,7 @@ const employee2 = new Human('Ms.')
 const employee3 = new Human('Mr.')
 const employee4 = new Human('Ms.')
 
-//****STUFF */
-const deskFoyer = new Furniture('dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, '', 50, false, false)
-const signStreet = new Supplies('No Soliciting', true, false, false, '', 0, false)
-const paperFoyer = new Supplies('Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
-const signFoyer = new Supplies('Office directory', false, false, false, '', 0, false)
-const pen = new Supplies('basic Bic. Black Ink. It writes.',true, false, false, '', 0, false)
-const doorknobMeth = new Furniture('', false, false, false, '',0,false,true )
-const deskMeth = new Furniture('a battered grey desk, covered in old stickers',false,false,false,'',50,false,true)
-const newspaper = new Supplies('Last week\'s copy of "Hometown", wet and crumpled',true,false,false,'',0,true)
+
 
 
 
@@ -222,18 +225,18 @@ function outcomeGenerator(min, max) {
 
     }
 }
-console.log('this is the outcome generator ' + outcomeGenerator())
+ outcomeGenerator()
 
 //once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
- let boxesSold = [];
+ //let boxesSold = [];
  function howManyBoxes(min, max) {
 
      return (Math.floor(Math.random() * (max - min + 1)) + min)
 
  }
  const boxesBought = howManyBoxes(1, 15)
- console.log('I\'ll buy ' + boxesSold + ' How much will it cost?')
- let totalCost = howManyBoxes() * 5
+
+ //let totalCost = howManyBoxes() * 5
 
 
 let states = {
