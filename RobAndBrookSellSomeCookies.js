@@ -20,8 +20,9 @@ function ask(questionText) {
 
 
 
-
-
+//****GLOBAL VARIABLES */
+let boxesBought = 0;
+let boxesSold = 0
 //--------------------------Classes Initialization -------------------------------
 class Room {
     constructor(title, descript, inventory, north, south, east, west, sign, locked) {
@@ -75,7 +76,7 @@ class IsCookie extends Inventory {
 
 
     remainingBoxes = () => {
-        let boxesSold = 12 //Have to replace this with function that returns number of boxes left
+      
         remainingBoxes = this.howManyBoxes - boxesSold;
         if (boxesSold > this.howManyBoxes) {
             return 'Oh, I\'m sorry, I only have ' + this.howManyBoxes + ' left.'
@@ -90,7 +91,7 @@ class IsCookie extends Inventory {
 
 
 class Characters {
-    constructor(firstName, description, initialHealth, currentHealth, age, inventory, currentRoom) {
+    constructor(firstName, description, health, age, inventory, currentRoom) {
         this.firstName = firstName || ''
         this.description = description || 'one of the finest in the land'
         this.initialHealth = health || 10
@@ -104,11 +105,12 @@ class Characters {
     healthStatus() {
          
         if (this.current === 0) {
-             console.log('You died')
-          }
-         console.log('you\'re still alive ' + this.currentHealth)
+            console.log('You died')
+        }
+        console.log('you\'re still alive ' + this.currentHealth)
          
         
+    }
 }
 
 
@@ -124,9 +126,9 @@ class Human extends Characters {
         boxesSold += boxesBought
         return boxesSold
     }
-    totalCost = (howManyBoxes) => {
-        this.totalCost = this.howManyBoxes * this.value
-        return (this.howManyBoxes + ' boxes will cost you $' + this.totalCost)
+    totalCost = (boxesBought) => {
+        this.totalCost = boxesBought * this.value
+        return (this.boxesBought + ' boxes will cost you $' + this.totalCost)
     }
 
 }
@@ -275,8 +277,7 @@ outcomeGenerator()
 
 
 //once somebody has agreed to buy cookies a random way to figure out how many boxes they buy
-let boxesSold = 0;
-let boxesBought = 0
+
 
 
 let roomLookup = {
