@@ -1,5 +1,6 @@
 //Zorkington Project by Brook and Rob
 //Due 2.17.20
+//"Chemistry: It's just like cooking, but don't lick the spoon."
 
 //--------------------sets up readline interface and async ask function-----//
 const readline = require('readline')
@@ -15,13 +16,11 @@ function ask(questionText) {
 };
 
 
-
-
-
-//****GLOBAL VARIABLES */
+//****GLOBAL VARIABLES *******************/
 let boxesBought = 0;
 let boxesSold = 0;
 const min = 0;
+
 //--------------------------Classes Initialization -------------------------------
 class Room {
     constructor(title, descript, inventory, north, south, east, west, sign, locked) {
@@ -35,12 +34,8 @@ class Room {
         this.sign = sign
         this.locked = false
     }
-
-
 }
 //end of Room class construct -------------------beginning of Inventory class
-
-
 class Inventory {
     constructor(item, description, isPortable, placeToHoldThings, value, ) {
         this.item = item || 'It\'s like, one of those thingamabobbers that you used to get in cereal boxes.'
@@ -53,28 +48,22 @@ class Inventory {
 }
 //end of Inventory class construct ------------------- beginning of Cookie class
 
-
 class IsCookie {
-    constructor(item, description, isPortable) {
-        this.cost = 5
-        this.name = item || 'cookie'
+    constructor(cost, item, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
+        this.item = item || 'cookie'
         this.flavor = flavor || 'way too sweet'
         this.texture = texture || 'like stale cardboard'
         this.shape = shape || 'an amorphous blob'
         this.numberInBox = numberInBox || 0
-        this.initialInventory = 20 // how many boxes girl scout starts with
+        this.initialInventory = initialInventory // how many boxes girl scout starts with
         this.glutenFree = glutenFree || false
         this.organic = organic || false
         this.gmoFree = gmoFree || false
     }
-
-
-   
+    cost = 5
 }
 
-
 //------end of Cookie class construct ------------------- beginning of Human class
-
 
 class Characters {
     constructor(firstName, description, health, age, inventory, currentRoom) {
@@ -87,7 +76,7 @@ class Characters {
         this.currentRoom = currentRoom || foyer
     }
     outcomeGenerator(min, max) {
-        
+
         this.max = 10
         outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
         {
@@ -134,10 +123,7 @@ class Human extends Characters {
 
 }
 
-
 //****end Characters begin Furniture and Office Supplies */
-
-
 class Furniture extends Inventory {
     constructor(item, description, isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
         super(item, description, isPortable, false, false, '', '')
@@ -145,7 +131,6 @@ class Furniture extends Inventory {
         this.conductsElectricity = conductsElectricity || false
     }
 }
-
 
 class Supplies extends Inventory {
     constructor(item, description, isPortable, isEdible, isHuman, isStuff, value, isFlammable) {
@@ -158,7 +143,6 @@ class Supplies extends Inventory {
 }
 //----------------------Constructors---------------------------------------
 
-
 //****STUFF */
 const deskFoyer = new Furniture('', 'dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
 const signStreet = new Supplies('', 'No Soliciting', true, false, false, '', 0, false)
@@ -169,7 +153,7 @@ const doorknobMeth = new Furniture('', '', false, false, false, '', 0, false, tr
 const deskMeth = new Furniture('', 'a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
 const newspaper = new Supplies('', 'Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
 
-
+//Room builders
 //title, descript, inventory, north, south, east, west, sign, locked//
 const street = new Room("Main Street at No. 182", "You look at the entrance, which has a sign reading 'No Soliciting' taped to its window.\nA security guard sits behind a desk within view of the door. ", [paperFoyer.description], "North across the street you see another building.", "The office building is in front of you.", "You look east up the hill toward UVM.", "You look west toward Lake Champlain.", "The sign says 'no soliciting.", "false")
 const foyer = new Room("This is the foyer", "You are in a room.", [newspaper.description, deskFoyer.description, signFoyer.description, pen.description], "You are facing north", "You are facing south", "You are facing east", "you are facing west", "This is a directory.", false)
@@ -202,7 +186,7 @@ const girlScout = {
     },
 
     pickUp: (item) => {
-        if (item.isPortable === true) {
+        if (item === true) {
             girlScout.inventory.push(item);
 
             return `You pick up a ${item.name}`
@@ -225,130 +209,106 @@ const girlScout = {
 
     }
 }
-console.log(girlScout.pickUp(isCookie))
+console.log(girlScout.pickUp())
 const securityOfficer = new Human('Tony', 'a crippled ex-meter reader, he has a visceral dislike of young men in baseball caps', 10, [])
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
 const employee3 = new Human('Mr.')
 const employee4 = new Human('Ms.')
 
-
-
 //-------------------Lookup tables
 
 const obCookies = {
-        'thin mint': thinMint,
-        'thin mints': thinMint,
-        'hill farmer': hillFarmer,
-        'hillfarmer': hillFarmer,
-        'samoa': samoas,
-        'samoas': samoas,
-        'montpeculiar': montpeculiar,
-        'montpelier': montpeculiar
-    }
+    'thin mint': thinMint,
+    'thin mints': thinMint,
+    'hill farmer': hillFarmer,
+    'hillfarmer': hillFarmer,
+    'samoa': samoas,
+    'samoas': samoas,
+    'montpeculiar': montpeculiar,
+    'montpelier': montpeculiar
+}
 
-// const commands = {
-//     "yes": yes,
-//     "no": no,
-//     "go": move,
-//     "move": move,
-//     "look": look,
-//     "see": look,
-//     "pick up": pickup,
-//     "pickup": pickup,
-//     "get": pickup,
-//     "drop": drop,
-//     "unlock": unlock,
-//     "speak": speak,
-//     "ask": speak,
-//     "show": show
-// }
+let states = {
+    street: { canChangeTo: ['foyer'] },
+    foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
+    stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+    elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+    secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
+    nectars: { canChangeTo: ['foyer'] },
+    trumpCodeAcademy: { canChangeTo: ['secondFloor'] },
+    asureSoftware: { canChangeTo: ['secondFloor'] },
+    thirdFloor: { canChangeTo: ["roof"] }
+}
 
 
-// let states = {
-//     street: { canChangeTo: ['foyer'] },
-//     foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
-//     stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
-//     elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
-//     secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
-//     nectars: { canChangeTo: ['foyer'] },
-//     trumpCodeAcademy: { canChangeTo: ['secondFloor'] },
-//     asureSoftware: { canChangeTo: ['secondFloor'] },
-//     thirdFloor: { canChangeTo: ["roof"] }
-// }
+let roomLookup = {
+    'street': street,
+    'foyer': foyer,
+    'stair': stairs,
+    'stairs': stairs,
+    'elevator': elevator,
+    'secondFloor': secondFloor,
+    'second floor': secondFloor,
+    'secondfloor': secondFloor,
+    'asure software': asureSoftware,
+    'trump': trumpCodeAcademy,
+    'trump code': trumpCodeAcademy,
+    'trump code academy': trumpCodeAcademy,
+    'nectar': nectars,
+    'nectars': nectars,
+    'asure': asureSoftware,
+    'third floor': thirdFloor,
+    'thirdfloor': thirdFloor,
+    'thirdFlooyr': thirdFloor
+}
+let currentState = 'street' //sets room location 
+let currentRoom = roomLookup[currentState] //for updating room location
 
-
-
-// let roomLookup = {
-//     'street': street,
-//     'foyer': foyer,
-//     'stair': stairs,
-//     'stairs': stairs,
-//     'elevator': elevator,
-//     'secondFloor': secondFloor,
-//     'second floor': secondFloor,
-//     'secondfloor': secondFloor,
-//     'asure software': asureSoftware,
-//     'trump': trumpCodeAcademy,
-//     'trump code': trumpCodeAcademy,
-//     'trump code academy': trumpCodeAcademy,
-//     'nectar': nectars,
-//     'nectars': nectars,
-//     'asure': asureSoftware,
-//     'third floor': thirdFloor,
-//     'thirdfloor': thirdFloor,
-//     'thirdFloor': thirdFloor
-// }
-// let currentState = 'street' //sets room location 
-// let currentRoom = roomLookup[currentState] //for updating room location
-
-
-
- async function startGame() {
-     girlScout.firstName = await ask("What is your name? \n>_")
-     console.log("Hello " + girlScout.firstName + " \n")
-     console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
-     console.log('the other commands you will need are "yes", "no", "look" to see what\'s in your immediate surroundings, "get" to pickup an item,"drop" to drop it. ' +
-         '"unlock" opens things, "speak" allows you to interact with another character and finally "show"')
-
-     let init = await ask("Are you ready to start?\n>_")
-     init.toLowerCase()
-     if (init === "y" || "yes") {
-         play();
-     } else
-         console.log('Sorry to see you go')
-     process.exit()
- }
- startGame()
+async function startGame() {
+    console.log("Hello - You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
+    console.log('the other commands you will need are "yes", "no", "look" to \nsee what\'s in your immediate surroundings, "get" \nto pickup an item,"drop" to drop it. ' +
+    '"unlock" opens things, \n"speak" allows you to interact with another character and finally "show"')
+    girlScout.firstName = await ask("What is your name? \n>_")
+    console.log("Hello " + girlScout.firstName + " \n")
+    
+    let init = await ask("Are you ready to start?\n>_")
+    init.toLowerCase()
+    if (init === "y" || "yes") {
+        play();
+    } else
+        console.log('Sorry to see you go')
+    process.exit()
+}
+startGame()
 
 // // play function will set recursive loop that will run until the first or 
 // // second if check passes (either we sell more than 25 boxes, or health falls
 // // below 1)
 
-  async function play() {
-      if (girlScout.boxesSold > 25) { //Sets block check for winning condition
-          console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
-          process.exit();
+async function play() {
+    if (girlScout.boxesSold > 25) { //Sets block check for winning condition
+        console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
+        process.exit();
 
-      } else if (girlScout.health < 1) { 
-          console.log("Oh no! You've run out of energy and health! You lose.")
-          process.exit()
-      }
-      else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
-           console.log("You are standing in " + currentRoom)
-           let command = await ask("What do you want to do?\n>_")
-               (states[currentState].canChangeTo.includes(command)) 
-                   console.log('You are going from: ' + currentState)
-           currentState = this.command
-           currentRoom = roomLookup[currentState]
-           console.log('Current state is: ' + currentState)
-           console.log('Current room description ' + currentRoom.descript)
-      }
-       else if (!states[currentState].canChangeto.includes(command)) {
-             console.log("Sorry, you can\'t get thar from heah");
-             console.log('Current state is: ' + currentState)
-         }
-play()
-      }
-  play()
+    } else if (girlScout.health < 1) {
+        console.log("Oh no! You've run out of energy and health! You lose.")
+        process.exit()
+    }
+    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
+        console.log("You are standing in " + currentRoom.title);
+        let userInput = await ask("What do you want to do?\n>_")
+          if (states[currentState].canChangeTo.includes(userInput)) {
+        console.log('You are going from: ' + currentState)
+        currentState = this.command
+        currentRoom = roomLookup[currentState]
+        console.log('Current state is: ' + currentState)
+        console.log('Current room description ' + currentRoom.descript)
+        } else if (!states[currentState].canChangeto.includes(userInput)) {
+            console.log("Sorry, you can\'t get thar from heah");
+            console.log('Current state is: ' + currentState)
+        }
+    }
+    play()
+}
 
