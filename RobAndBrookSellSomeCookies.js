@@ -124,34 +124,28 @@ class Human extends Characters {
 }
 
 //****end Characters begin Furniture and Office Supplies */
-class Furniture extends Inventory {
-    constructor(item, description, isPortable, isEdible, isHuman, isStuff, value, isOpen, conductsElectricity) {
-        super(item, description, isPortable, false, false, '', '')
-        this.isOpen = isOpen || false
-        this.conductsElectricity = conductsElectricity || false
+class roomItems{
+    constructor(item, description, locked, isPortable) {
+        this.item = item
+        this.description = description 
+        this.locked = locked || false
+        this.isPortable = isPortable || false
     }
 }
-
-class Supplies extends Inventory {
-    constructor(item, description, isPortable, isEdible, isHuman, isStuff, value, isFlammable) {
-        super(item, description, true, isEdible, false, '', '')
-        this.isFlammable = isFlammable || false
-
-    }
 
 
 }
 //----------------------Constructors---------------------------------------
 
 //****STUFF */
-const deskFoyer = new Furniture('', 'dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
-const signStreet = new Supplies('', 'No Soliciting', true, false, false, '', 0, false)
-const paperFoyer = new Supplies('', 'Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
-const signFoyer = new Supplies('', 'Office directory', false, false, false, '', 0, false)
-const pen = new Supplies('', 'basic Bic. Black Ink. It writes.', true, false, false, '', 0, false)
-const doorknobMeth = new Furniture('', '', false, false, false, '', 0, false, true)
-const deskMeth = new Furniture('', 'a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
-const newspaper = new Supplies('', 'Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
+const deskFoyer = new roomItems('', 'dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
+const signStreet = new roomItems('', 'No Soliciting', true, false, false, '', 0, false)
+const paperFoyer = new roomItems('', 'Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
+const signFoyer = new roomItems('', 'Office directory', false, false, false, '', 0, false)
+const pen = new roomItems('', 'basic Bic. Black Ink. It writes.', true, false, false, '', 0, false)
+const doorknobMeth = new roomItems('', '', false, false, false, '', 0, false, true)
+const deskMeth = new roomItems('', 'a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
+const newspaper = new roomItems('', 'Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
 
 //Room builders
 //title, descript, inventory, north, south, east, west, sign, locked//
