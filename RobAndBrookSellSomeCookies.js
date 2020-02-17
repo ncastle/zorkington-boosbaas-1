@@ -240,6 +240,8 @@ let roomLookup = {
 }
 let currentState = 'street'
 let currentRoom = roomLookup[currentState]
+//let roomInventory = currentRoom.inventory
+
 //----------------------------start game function ------------------------
 
 async function startGame() {
@@ -269,8 +271,9 @@ async function play() {
             console.log('Going from room: ' + currentState)
             currentState = change
             currentRoom = roomLookup[currentState]
-            console.log('Current state is: ' + currentState)
+            console.log('Current room is: ' + currentState)
             console.log('Current room is: ' + currentRoom.descript)
+            console.log('This room contains ' + currentRoom.inventory)
         } else {
             console.log('Sorry, you can\'t get thar from heah')
             console.log('Current state is: ' + currentState)
