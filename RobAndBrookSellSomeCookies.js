@@ -165,14 +165,14 @@ class Supplies extends Inventory {
 
 
 //****STUFF */
-const deskFoyer = new Furniture('dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
-const signStreet = new Supplies('No Soliciting', true, false, false, '', 0, false)
-const paperFoyer = new Supplies('Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
-const signFoyer = new Supplies('Office directory', false, false, false, '', 0, false)
-const pen = new Supplies('basic Bic. Black Ink. It writes.', true, false, false, '', 0, false)
-const doorknobMeth = new Furniture('', false, false, false, '', 0, false, true)
-const deskMeth = new Furniture('a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
-const newspaper = new Supplies('Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
+const deskFoyer = new Furniture('','dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
+const signStreet = new Supplies('','No Soliciting', true, false, false, '', 0, false)
+const paperFoyer = new Supplies('','Security Guard\'s daily "to-do" list. Has code for front door keypad written on it.', true, false, false, '', 0, true)
+const signFoyer = new Supplies('','Office directory', false, false, false, '', 0, false)
+const pen = new Supplies('','basic Bic. Black Ink. It writes.', true, false, false, '', 0, false)
+const doorknobMeth = new Furniture('','', false, false, false, '', 0, false, true)
+const deskMeth = new Furniture('','a battered grey desk, covered in old stickers', false, false, false, '', 50, false, true)
+const newspaper = new Supplies('','Last week\'s copy of "Hometown", wet and crumpled', true, false, false, '', 0, true)
 
 
 //title, descript, inventory, north, south, east, west, sign, locked//
@@ -230,9 +230,6 @@ const employee2 = new Human('Ms.')
 const employee3 = new Human('Mr.')
 const employee4 = new Human('Ms.')
 
-//Rob, unfortunately, I feel like my only real strengths here are fleshing out objects.
-//Go ahead and do it! You are doing that really well. And I think the generator function 
-//works great too. Thanks.  Talk to you later.
 
 
 //-------------------Lookup tables
@@ -343,31 +340,34 @@ async function startGame() {
 }
 startGame()
 
-//play function will set recursive loop that will run until the first or 
-//second if check passes (either we sell more than 25 boxes, or health falls
-//below 1)
+// play function will set recursive loop that will run until the first or 
+// second if check passes (either we sell more than 25 boxes, or health falls
+// below 1)
 
-// async function play() {
-//     if (girlScout.boxesSold > 25) { //Sets block check for winning condition
-//         console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
-//         process.exit();
-//     } else if (girlScout.health < 1) { //sets losing condition
-//         console.log("Oh no! You've run out of energy and health! You lose.")
-//         process.exit()
-//     } else if (girlScout.boxesSold >= 0) {  // this else contains most of the game play 
-//         console.log("You are standing in " + currentRoom)
-//         let command = await ask("What do you want to do?\n>_")
-//             (states[currentState].canChangeTo.includes(command)) 
-//                 console.log('You are going from: ' + currentState)
-//         currentState = this.command
-//         currentRoom = roomLookup[currentState]
-//         console.log('Current state is: ' + currentState)
-//         console.log('Current room description ' + currentRoom.descript)
-//     } else if (states[currentState].canChangeto.includes(!= command) {
-//          console.log("Sorry, you can\'t get thar from heah");
-//          console.log('Current state is: ' + currentState)
-//      }
+ async function play() {
+     if (girlScout.boxesSold > 25) { //Sets block check for winning condition
+         console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
+         process.exit();
+
+     } else if (girlScout.health < 1) { 
+         console.log("Oh no! You've run out of energy and health! You lose.")
+         process.exit()
+     }
+     else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
+          console.log("You are standing in " + currentRoom)
+          let command = await ask("What do you want to do?\n>_")
+              (states[currentState].canChangeTo.includes(command)) 
+                  console.log('You are going from: ' + currentState)
+          currentState = this.command
+          currentRoom = roomLookup[currentState]
+          console.log('Current state is: ' + currentState)
+          console.log('Current room description ' + currentRoom.descript)
+     }
+      else if (states[currentState].canChangeto.includes(!=command)) {
+            console.log("Sorry, you can\'t get thar from heah");
+            console.log('Current state is: ' + currentState)
+        }
         
-//     }
-// play()
+     }
+ play()
 
