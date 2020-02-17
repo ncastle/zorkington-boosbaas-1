@@ -49,9 +49,10 @@ class Inventory {
 //end of Inventory class construct ------------------- beginning of Cookie class
 
 class IsCookie {
-    constructor(cost, item, flavor, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
-        this.item = item || 'cookie'
-        this.flavor = flavor || 'way too sweet'
+    constructor(item, cost, description, isPortable, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
+        this.name = item || 'cookie'
+        this.cost = 5
+        this.flavor = description || 'way too sweet'
         this.texture = texture || 'like stale cardboard'
         this.shape = shape || 'an amorphous blob'
         this.numberInBox = numberInBox || 0
@@ -60,7 +61,9 @@ class IsCookie {
         this.organic = organic || false
         this.gmoFree = gmoFree || false
     }
-    cost = 5
+
+
+
 }
 
 //------end of Cookie class construct ------------------- beginning of Human class
@@ -175,7 +178,7 @@ const montpeculiar = new IsCookie('Montpeculiar', 'sweet and grassy, cbd, hemp a
 //****CHARACTERS */
 const girlScout = {
     name: '',
-    inventory: [thinMint],
+    inventory: [],
     currentRoom: foyer,
     initialHealth: 10,
     boxesSold: 0,
@@ -185,20 +188,17 @@ const girlScout = {
         return (this.boxesBought + ' boxes will cost you $' + this.totalCost)
     },
 
-    pickUp: (item) => {
-        if (item === true) {
-            girlScout.inventory.push(item);
-
-            return `You pick up a ${item.name}`
-        } else {
-            return "You can't take that"
-        }
-
+    pickup(item) {
+        this.inventory.push(item)
+        console.log("You have picked up the " + item)
     },
-    lookAround: () => {
-        return this.currentRoom.description
-    },
-    remainingBoxes: () => {
+
+
+    //lookAround(currentRoom) {
+    //  return this.currentRoom.description
+    //},
+
+    remainingBoxes() {
 
         remainingBoxes = this.howManyBoxes - boxesSold;
         if (boxesSold > this.howManyBoxes) {
@@ -209,7 +209,6 @@ const girlScout = {
 
     }
 }
-console.log(girlScout.pickUp("cookie boxes."))
 const securityOfficer = new Human('Tony', 'a crippled ex-meter reader, he has a visceral dislike of young men in baseball caps', 10, [])
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
@@ -229,30 +228,50 @@ const obCookies = {
     'montpelier': montpeculiar
 }
 
-let states = {
-    street: { canChangeTo: ['foyer'] },
-    foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
-    stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
-    elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
-    secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
-    nectars: { canChangeTo: ['foyer'] },
-    trumpCodeAcademy: { canChangeTo: ['secondFloor'] },
-    asureSoftware: { canChangeTo: ['secondFloor'] },
-    thirdFloor: { canChangeTo: ["roof"] }
-}
+
+ /*const commands = {
+     "yes": yes,
+     "no": no,
+     "go": move,
+     "move": move,
+     "look": look,
+     "see": look,
+     "pick up": pickup,
+     "pickup": pickup,
+     "get": pickup,
+     "drop": drop,
+     "unlock": unlock,
+     "speak": speak,
+     "ask": speak,
+     "show": show
+ } */
 
 
-let roomLookup = {
-    'street': street,
-    'foyer': foyer,
-    'stair': stairs,
-    'stairs': stairs,
-    'elevator': elevator,
-    'secondFloor': secondFloor,
-    'second floor': secondFloor,
-    'secondfloor': secondFloor,
-    'asure software': asureSoftware,
-    'trump': trumpCodeAcademy,
+ let states = {
+     street: { canChangeTo: ['foyer'] },
+     foyer: { canChangeTo: ['street', 'stairs', 'elevator', 'nectars'] },
+     stairs: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+     elevator: { canChangeTo: ['foyer', 'thirdFloor', 'secondFloor'] },
+     secondFloor: { canChangeTo: ['elevator', 'stairs', 'trumCodeAcademy', 'asureSoftware'] },
+     nectars: { canChangeTo: ['foyer'] },
+     trumpCodeAcademy: { canChangeTo: ['secondFloor'] },
+     asureSoftware: { canChangeTo: ['secondFloor'] },
+     thirdFloor: { canChangeTo: ["roof"] }
+ }
+
+
+
+ let roomLookup = {
+     'street': street,
+     'foyer': foyer,
+     'stair': stairs,
+     'stairs': stairs,
+     'elevator': elevator,
+     'secondFloor': secondFloor,
+     'second floor': secondFloor,
+     'secondfloor': secondFloor,
+     'asure software': asureSoftware,
+     'trump': trumpCodeAcademy,
     'trump code': trumpCodeAcademy,
     'trump code academy': trumpCodeAcademy,
     'nectar': nectars,
@@ -260,20 +279,21 @@ let roomLookup = {
     'asure': asureSoftware,
     'third floor': thirdFloor,
     'thirdfloor': thirdFloor,
-    'thirdFlooyr': thirdFloor
+    'thirdFloor': thirdFloor
 }
 let currentState = 'street' //sets room location 
 let currentRoom = roomLookup[currentState] //for updating room location
-let init = null
+
+
 
 async function startGame() {
-    console.log("Hello - You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
-    console.log('the other commands you will need are "yes", "no", "look" to \nsee what\'s in your immediate surroundings, "get" \nto pickup an item,"drop" to drop it. ' +
-    '"unlock" opens things, \n"speak" allows you to interact with another character and finally "show"')
     girlScout.firstName = await ask("What is your name? \n>_")
     console.log("Hello " + girlScout.firstName + " \n")
-    
-    init = await ask("Are you ready to start?\n>_")
+    console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
+    console.log('the other commands you will need are "yes", "no", "look" to see what\'s in your immediate surroundings, "get" to pickup an item,"drop" to drop it. ' +
+        '"unlock" opens things, "speak" allows you to interact with another character and finally "show"')
+
+    let init = await ask("Are you ready to start?\n>_")
     init.toLowerCase()
     if (init === "y" || "yes") {
         play();
@@ -292,24 +312,25 @@ async function play() {
         console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
         process.exit();
 
-    } else if (girlScout.initialHealth < 1) {
+    } else if (girlScout.health < 1) {
         console.log("Oh no! You've run out of energy and health! You lose.")
         process.exit()
     }
-    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play
-        console.log("You are standing in " + currentRoom.title);
-        let userInput = await ask("What do you want to do?\n>_")
-          if (states[currentState].canChangeTo.includes(userInput)) {
+    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
+        console.log("You are standing in " + currentRoom)
+        let command = await ask("What do you want to do?\n>_")
+            (states[currentState].canChangeTo.includes(command))
         console.log('You are going from: ' + currentState)
         currentState = this.command
         currentRoom = roomLookup[currentState]
         console.log('Current state is: ' + currentState)
         console.log('Current room description ' + currentRoom.descript)
-        } else if (!states[currentState].canChangeto.includes(userInput)) {
-            console.log("Sorry, you can\'t get thar from heah");
-            console.log('Current state is: ' + currentState)
-        }
+    }
+    else if (!states[currentState].canChangeto.includes(command)) {
+        console.log("Sorry, you can\'t get thar from heah");
+        console.log('Current state is: ' + currentState)
     }
     play()
 }
+play()
 
