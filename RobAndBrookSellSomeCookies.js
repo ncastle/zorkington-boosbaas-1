@@ -54,6 +54,7 @@ class Inventory {
 
 
     }
+    
 }
 //end of Inventory class construct ------------------- beginning of Cookie class
 
@@ -101,17 +102,27 @@ class Characters {
         this.inventory = inventory || []//POTENTIAL TO SET MAX NUMBER THINGS CAN CARRY
         this.currentRoom = currentRoom || foyer
     }
-
-
-    healthStatus() {
-
-        if (this.currentHealth === 0) {
-            console.log('You died')
+    outcomeGenerator(min, max) {
+        this.min = 0
+        this.max = 10
+        outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
+        {
+            if (outcome > 7) {
+                return true //this means action will happen
+            } else if (outcome <= 7) {
+                return false
+            }
         }
-        console.log('you\'re still alive ' + this.currentHealth)
-
-
     }
+
+        healthStatus() {
+            if (this.currentHealth === 0) {
+                console.log('You died')
+            }
+            console.log('you\'re still alive ' + this.currentHealth)
+        }
+ 
+ 
 }
 
 
@@ -224,7 +235,7 @@ const girlScout = {
 }
 
 console.log(girlScout.pickUp(thinMint))
-const securityOfficer = new Human('Tony')
+const securityOfficer = new Human('Tony','a crippled ex-meter reader, he has a visceral dislike of young men in baseball caps',10,[],)
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
 const employee3 = new Human('Mr.')
@@ -275,27 +286,6 @@ let states = {
     thirdFloor: { canChangeTo: ["roof"] }
 }
 
-//----------------FUNCTIONS-------------
-// a way to determine what nonplayer characters do. if it's greater than 5 the answer is yes, 5 or less, no.
-function outcomeGenerator(min, max) {
-    min = 0
-    max = 10
-    outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
-    {
-        if (outcome > 7) {
-            return true //this means action will happen
-        } else if (outcome <= 7) {
-            return false
-        }
-    }
-}
-outcomeGenerator()
-
-
-
-
-//what if we set the 
-
 
 
 let roomLookup = {
@@ -321,8 +311,7 @@ let roomLookup = {
 let currentState = 'street' //sets room location 
 let currentRoom = roomLookup[currentState] //for updating room location
 
-//Brook - I'm putting the start game ahead of the play() function
-//this will set it up to initialize the game conditions , Well done. Thanks!
+
 
 async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
@@ -332,7 +321,9 @@ async function startGame() {
         '"unlock" opens things, "speak" allows you to interact with another character and finally "show"')
 
     let init = await ask("Are you ready to start?\n>_")
+    init.toLowerCase()
     if (init === "y" || "yes") {
+
         play();
     } else
         console.log('Sorry to see you go')
