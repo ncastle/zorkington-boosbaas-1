@@ -209,7 +209,7 @@ const girlScout = {
 
     }
 }
-console.log(girlScout.pickUp())
+console.log(girlScout.pickUp("cookie boxes."))
 const securityOfficer = new Human('Tony', 'a crippled ex-meter reader, he has a visceral dislike of young men in baseball caps', 10, [])
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
@@ -264,6 +264,7 @@ let roomLookup = {
 }
 let currentState = 'street' //sets room location 
 let currentRoom = roomLookup[currentState] //for updating room location
+let init = null
 
 async function startGame() {
     console.log("Hello - You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
@@ -272,7 +273,7 @@ async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
     console.log("Hello " + girlScout.firstName + " \n")
     
-    let init = await ask("Are you ready to start?\n>_")
+    init = await ask("Are you ready to start?\n>_")
     init.toLowerCase()
     if (init === "y" || "yes") {
         play();
@@ -291,11 +292,11 @@ async function play() {
         console.log("Congrats! You won the game! A magnificent unicorn sweeps down out of the sky to carry you away.")
         process.exit();
 
-    } else if (girlScout.health < 1) {
+    } else if (girlScout.initialHealth < 1) {
         console.log("Oh no! You've run out of energy and health! You lose.")
         process.exit()
     }
-    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
+    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play
         console.log("You are standing in " + currentRoom.title);
         let userInput = await ask("What do you want to do?\n>_")
           if (states[currentState].canChangeTo.includes(userInput)) {
