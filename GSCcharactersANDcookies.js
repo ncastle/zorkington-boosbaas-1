@@ -1,26 +1,30 @@
 
-/*******GLOBAL VARIABLES     */
-const min = 0;
+
+
+
 /***GLOBAL FUNCTION */
-function outcomeGenerator() {
-    min = 1;
-    max = 10;
-    return outcome = (Math.floor(Math.random() * (max - min + 1)) + min);
-} 
+//random number generator, need to give outcome a min and max when calling it.
+let outcome = function outcomeGenerator(min, max) {
+    return outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min);
+}
 
 /**HUMANS    */
 class Human {
-    constructor(name, currentRoom, health, thingsYouCanPickUp, bag, description, ) {
+    constructor(name, currentRoom, health, thingsYouCanPickUp, bag, money, description, sold) {
         this.Name = name || "Your parents thought they were doing you a favor by pickiing such a special name"
         this.currentRoom = currentRoom || 'foyer'
-        this.initialHealth = health || 10
         this.currentHealth = health
         this.thingsYouCanPickUp = []
         this.bag = [] //it could be a drawer or a backpack or, if it's before july 1 2020 a single use plastic bag.
+        this.moneyBeforeBuy = money //gotta pay for the cookies
+        this.moneyAfterBuy = money // how much you have left
         this.description = description || 'one of the finest in the land'
+        this.sold = 0; // only for the girl scout if >=25, they win
+
     }
     healthStatus(outcome) {
-        this.currentHealth = this.currentHealth-outcome
+        let damageDone = outcome;
+        this.currentHealth = (this.currentHealth - damageDone)
         if (this.currentHealth <= 0) {
             console.log('You died')
         } else {
@@ -52,10 +56,19 @@ class Human {
         console.log('Why would you do that?')
 
     }
+    totalSold(boxesBought) {
+        sold += boxesBought
+        leftToSell = 25 - sold
+        if (sold > 25) {
+            console.log('You win!!!!! Unicorns swoop down to take you a girl scout heaven')
+        } else {
+            console.log('You\'re getting there! Only ' + leftToSell + ' to go.')
+        } return sold
+    }
 }
-const girlScout2 = new Human()
+
 class IsCookie {
-    constructor(aThingYouPickUp, initialInventory, canPickup=true, description, texture, shape, numberInBox,  glutenFree, organic, gmoFree, costOfBox,) {
+    constructor(aThingYouPickUp, initialInventory, canPickup = true, description, texture, shape, numberInBox, glutenFree, organic, gmoFree, costOfBox, ) {
         this.nameofCookie = aThingYouPickUp || 'cookie'
         this.initialInventory = 0 // how many boxes girl scout starts with
         this.flavor = description || 'way too sweet'
@@ -77,9 +90,9 @@ class IsCookie {
 
 //*****COOKIES */
 const thinMint = new IsCookie('thin mints', 30, 'mint-flavored cookies with a delicious chocolaty coating', 'crunchy', 'round', 32)
-const hillFarmer = new IsCookie('Hill Farmer', 10, 'maple oatmeal', 'crunchy', 'lacy round wafers', 16,  true, true, true)
-const samoas = new IsCookie('Samoas', 20,'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14 )
-const montpeculiar = new IsCookie('Montpeculiar',5, 'sweet and grassy,these cbd infused hemp seed and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', true, true, true)
+const hillFarmer = new IsCookie('Hill Farmer', 10, 'maple oatmeal', 'crunchy', 'lacy round wafers', 16, true, true, true)
+const samoas = new IsCookie('Samoas', 20, 'caramel and toasted coconut-covered cookies', 'crisp and chewy', 'round', 14)
+const montpeculiar = new IsCookie('Montpeculiar', 5, 'sweet and grassy,these cbd infused hemp seed and date cookies will remind you of rolling down a hill on a warm summer day', '', '', 'more than 8 fewer than 14', true, true, true)
 
 const obCookies = {
     'thin mint': thinMint,
@@ -92,33 +105,15 @@ const obCookies = {
     'montpelier': montpeculiar
 }
 //****CHARACTERS */
-const girlScout = {
-    name: null,
-    inventory: [],
-    currentRoom: 'foyer',
-    initialHealth: 10,
-    boxesSold: 0,
-
-    totalCost(boxesBought) {
-        this.totalCost = boxesBought * this.value
-        return (this.boxesBought + ' boxes will cost you $' + this.totalCost)
-    },
-
-    pickup: function () {
-        while (bag.length < 5 && (canPickup === true)) {
-            theThingYouPickUp = thingsYouCanPickUp.pop()
-            console.log('You put ' + theThingYouPickUp + ' in your bag.')
-            bag.push(theThingYouPickUp);
-        }
-        console.log('Why would you do that?')
-    }
 
 
 
-    //lookAround(currentRoom) {
-    //  return this.currentRoom.description
-    //},
-}
+
+
+//lookAround(currentRoom) {
+//  return this.currentRoom.description
+//},
+
 //     remainingBoxes() {
 
 //         remainingBoxes = this.howManyBoxes - boxesSold;
@@ -130,12 +125,13 @@ const girlScout = {
 
 //   }
 //  }
-
-// let securityOfficer = new Human('Tony', 10, "Manzello", "Crippled ex-Meter Reader", "55", 0, 0, 100, foyer)
+const girlScout = new Human('', 'foyer', 10, [], [hillFarmer.initialInventory], 0, '')
+const securityOfficer = new Human('Tony', 'foyer', 10, [], [], 100, "Crippled ex-Meter Reader")
 // let employeeNectars = new Human('John Q.', 10, 'Barman', "A guy with a trimmed beard and long hair: The bar manager for Nectar's.", 35, 0, 0, 150, nectars)
 // let employeeTrump = new Human('Suzy', 10, 'Trump', 'A blonde woman with spray-on tan.', 25, 0, 0, 2000, trumpCodeAcademy)
 // let employeeTrump2 = new Human('Jimbo', 10, 'Barr', "A middle-aged guy wearing sunglasses and carrying a briefcase.", 55, 0, 0, 150, trumpCodeAcademy)
 // let employeeAsure1 = new Human("Kip", 10, "Steele", "An energetic man with a big smile.", 46, 0, 0, 75, asureSoftware)
 // let employeeAsure2 = new Human("Lana", 10, "Potter", "A woman with brown hair and a big smile.", 32, 0, 0, 175, asureSoftware)
 
-console.log(girlScout2)
+console.log(' girl scout health ' + girlScout.healthStatus(1,5) + ' security guard health ' + securityOfficer.healthStatus((1,5)))
+console.log(' girl scout health ' + girlScout.healthStatus(1, 5) + ' security guard health ' + securityOfficer.healthStatus((1, 5)))
