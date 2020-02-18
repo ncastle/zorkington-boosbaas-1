@@ -56,88 +56,8 @@ class Inventory {
 //end of Inventory class construct ------------------- beginning of Cookie class
 
 
-class IsCookie {
-    constructor(item, cost, description, isPortable, texture, shape, numberInBox, initialInventory, glutenFree, organic, gmoFree) {
-        this.name = item || 'cookie'
-        this.cost = 5
-        this.flavor = description || 'way too sweet'
-        this.texture = texture || 'like stale cardboard'
-        this.shape = shape || 'an amorphous blob'
-        this.numberInBox = numberInBox || 0
-        this.initialInventory = 20 // how many boxes girl scout starts with
-        this.glutenFree = glutenFree || false
-        this.organic = organic || false
-        this.gmoFree = gmoFree || false
-    }
 
-
-
-}
-
-
-//------end of Cookie class construct ------------------- beginning of Human class
-
-
-class Characters {
-    constructor(firstName, description, health, age, inventory, currentRoom) {
-        this.firstName = firstName || ''
-        this.description = description || 'one of the finest in the land'
-        this.initialHealth = health || 10
-        this.currentHealth = health
-        this.age = age || 'Older than the girl scout'
-        this.inventory = inventory || []//POTENTIAL TO SET MAX NUMBER THINGS CAN CARRY
-        this.currentRoom = currentRoom || foyer
-    }
-    outcomeGenerator(min, max) {
-
-        this.max = 10
-        outcome = parseInt(Math.floor(Math.random() * (max - min + 1)) + min)
-        {
-            if (outcome > 7) {
-                return true //this means action will happen
-            } else if (outcome <= 7) {
-                return false
-            }
-        }
-    }
-
-    healthStatus() {
-        if (this.currentHealth === 0) {
-            console.log('You died')
-        }
-        console.log('you\'re still alive ' + this.currentHealth)
-    }
-
-
-}
-
-
-class Human extends Characters {
-    constructor(firstName, description, initialHealth, currentHealth, inventory, age, currentRoom, hasGender) {
-        super(firstName, description, 10, currentHealth, age, inventory, currentRoom)
-        this.hasGender = hasGender
-    }
-    howManyBoxes() {
-        let min = 1
-        let max = 15
-        boxesBought = (Math.floor(Math.random() * (max - min + 1)) + min)
-        boxesSold += boxesBought
-        return boxesSold
-    }
-    totalCost(boxesBought) {
-        this.totalCost = boxesBought * this.value
-        return (this.boxesBought + ' boxes will cost you $' + this.totalCost)
-    }
-    pickup(item) {
-        currentRoom.inventory.pop(item)
-        this.inventory.push(item)
-        console.log("You have picked up the " + item)
-    }
-
-}
-
-
-//****end Characters begin Furniture and Office Supplies */
+//****Furniture and Office Supplies */
 
 
 class Furniture extends Inventory {
