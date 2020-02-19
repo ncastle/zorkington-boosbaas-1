@@ -1,3 +1,12 @@
+/** Overall, looks like you have a really well structured game. You have some really creative ideas and are using objects and classes in the correct way.
+ *  Really cool and fun idea with the girl scout walking through an office trying to sell cookies. When you have extra files that are unused, or have files that
+ *  you are testing concepts and ideas in, remember to remove them from the repository or add them to your .gitignore file so that they are not tracked by git.
+ *  Also, if you have multiple files, be clear which one should be run to start your program. I like that you have a girlscoutcookies.txt file that outlines
+ *  your game and the direction you wanted to go, and I like that you used it to split up tasks. This is a great strategy, but should be in your gitignore. Some
+ *  of the stuff in this file are good things you could have in a readme file: the game description, what file to run to start your game. Other than that,
+ *  your organization and readability are good. There is some funky stuff happening when you start your program, check out the comments around your play and
+ *  start game function for more info. It looks like you put a lot of time and thought into this program, once you work out some of the big bugs causing it to
+ *  crash, you will be right where you need to be! **/
 //Zorkington Project by Brook and Rob
 //Due 2.17.20
 //"Chemistry: It's just like cooking, but don't lick the spoon."
@@ -17,9 +26,11 @@ function ask(questionText) {
 
 
 //****GLOBAL VARIABLES *******************/
+/**Since this is associated with a Human, this can be a property in the human class instead of a global variable that will be accessed by every human */
 let boxesBought = 0;
+/** The same applies to boxesSold, this can be a property of your girlscout object */
 let boxesSold = 0;
-const min = 0;
+const min = 0;  /** unused at the time of this submission */
 
 //--------------------------Classes Initialization -------------------------------
 class Room {
@@ -36,6 +47,9 @@ class Room {
     }
 }
 //end of Room class construct -------------------beginning of Inventory class
+
+/** maybe a better name for this would be 'Item'? Then, instead of this.item, maybe this.name? Other than this, really good use of classes to create different
+ *  objects, rooms, people, etc, that you can interact with in your code.  **/
 class Inventory {
     constructor(item, description, isPortable, placeToHoldThings, value, ) {
         this.item = item || 'It\'s like, one of those thingamabobbers that you used to get in cereal boxes.'
@@ -98,7 +112,7 @@ class Characters {
         console.log('you\'re still alive ' + this.currentHealth)
     }
 
-
+    /** Remove these extra spaces at the end of classes and chunks of code to save lines and shorten your file length as well as increase readability**/
 }
 
 
@@ -145,6 +159,7 @@ class Supplies extends Inventory {
 
 }
 //----------------------Constructors---------------------------------------
+/** Good use of comments throughout your code to separate out sections **/
 
 //****STUFF */
 const deskFoyer = new Furniture('', 'dark pressboard desk. Has computer, telephone and an insulated coffee mug on top', false, false, false, [], 50, false, false)
@@ -209,6 +224,7 @@ const girlScout = {
 
     }
 }
+/** Is looks like these were declared, but are not being used throughout the rest of your code **/
 const securityOfficer = new Human('Tony', 'a crippled ex-meter reader, he has a visceral dislike of young men in baseball caps', 10, [])
 const employee1 = new Human('Mr.')
 const employee2 = new Human('Ms.')
@@ -228,7 +244,7 @@ const obCookies = {
     'montpelier': montpeculiar
 }
 
-
+/** Remember to remove unused code for project submissions for better readability **/
  /*const commands = {
      "yes": yes,
      "no": no,
@@ -281,7 +297,7 @@ const obCookies = {
     'thirdfloor': thirdFloor,
     'thirdFloor': thirdFloor
 }
-let currentState = 'street' //sets room location 
+let currentState = 'street' //sets room location
 let currentRoom = roomLookup[currentState] //for updating room location
 
 
@@ -290,20 +306,25 @@ async function startGame() {
     girlScout.firstName = await ask("What is your name? \n>_")
     console.log("Hello " + girlScout.firstName + " \n")
     console.log("You are selling girl scout cookies. \nTo win the game you need to sell 25 or more boxes.\nTo check how many you've sold, type [i]\nTo move around use [move][direction]")
+    /** I like that you give the user a list of commands that they can use, this is very helpful **/
     console.log('the other commands you will need are "yes", "no", "look" to see what\'s in your immediate surroundings, "get" to pickup an item,"drop" to drop it. ' +
         '"unlock" opens things, "speak" allows you to interact with another character and finally "show"')
 
     let init = await ask("Are you ready to start?\n>_")
     init.toLowerCase()
+    /** The correct syntax here would be init === 'y' || init === 'yes'   The way this is written currently, it will check if init is equal to 'y' and if true,
+     *  then great, you hit the play function, if not, then it will go to the other side of the OR operator and check the value of 'yes', and since a non-empty
+     *  string is always truthy, this will always be true, no matter what the user inputs. **/
     if (init === "y" || "yes") {
         play();
-    } else
+    } else{    // missing curly braces
         console.log('Sorry to see you go')
-    process.exit()
+        process.exit()}  /** Remember your curly braces after your else!! This causes your program to exit immediately after the user responds to the question 'are you ready to start?' **/
 }
+/** Since this function call starts your whole game, maybe think about moving it all the way to the bottom so that it doesn't get lost in your function definitions **/
 startGame()
 
-// // play function will set recursive loop that will run until the first or 
+// // play function will set recursive loop that will run until the first or
 // // second if check passes (either we sell more than 25 boxes, or health falls
 // // below 1)
 
@@ -316,12 +337,14 @@ async function play() {
         console.log("Oh no! You've run out of energy and health! You lose.")
         process.exit()
     }
-    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play 
+    else if (girlScout.boxesSold >= 0) {   //this else contains most of the game play
+        /** I think you want to console.log the currentRoom.title here, this currently prints '[ object Object ]' to the console **/
         console.log("You are standing in " + currentRoom)
         let command = await ask("What do you want to do?\n>_")
-            (states[currentState].canChangeTo.includes(command))
+        /** Is this supposed to be an if statement? This currently throws an error when starting your program **/
+            // (states[currentState].canChangeTo.includes(command))     // this was uncommented
         console.log('You are going from: ' + currentState)
-        currentState = this.command
+        currentState = command /** the this keyword should generally only be used when defining methods in an object, here you can just access the command variable declared a few lines above **/
         currentRoom = roomLookup[currentState]
         console.log('Current state is: ' + currentState)
         console.log('Current room description ' + currentRoom.descript)
@@ -332,5 +355,7 @@ async function play() {
     }
     play()
 }
-play()
+
+/** Since you start the game with startGame() and you call play() inside of that, I don't think you need this here. It seems to be causing some issues when starting your program **/
+// play()   // this was uncommented
 
